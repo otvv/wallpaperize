@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="128" src="repo/wallpaperize-logo.png" alt="logo">
+  <img width="128" src="repo/wallpaperize-logo.png" alt="wallpaperize-logo">
 </p>
 <p align="center">
   <strong>wallpaperize!</strong>
@@ -27,7 +27,7 @@ If you find bugs or glitches feel free to report it in the issues tab. If you wa
 
 ##### wallpaperize! is powered by:
 
-<strong><a href="https://github.com/otvv/malua">malua</a></strong> <img width="18" height="18" src="https://user-images.githubusercontent.com/17851066/213260034-7106851e-74e5-4ec5-a83c-95ce291b356d.png" alt="pill emoji"> Pure CSS and JavaScript menu framework/ui toolkit
+<strong><a href="https://github.com/otvv/malua">malua</a></strong> <img width="18" height="18" src="repo/malua-logo.png" alt="pill emoji"> Pure CSS and JavaScript menu framework/ui toolkit
 
 #
 
