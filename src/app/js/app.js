@@ -20,7 +20,7 @@ const drawForegroundImage = (
   shadow
 ) => {
   if (rounded) {
-    // Create a temporary canvas to draw the rounded image
+    // create a temporary canvas to draw the rounded image
     const tempCanvas = document.createElement("canvas");
     tempCanvas.width = width;
     tempCanvas.height = height;
@@ -37,7 +37,7 @@ const drawForegroundImage = (
     tempCtx.clip();
     tempCtx.drawImage(image, 0, 0, width, height);
 
-    // Apply shadow to the entire temporary canvas
+    // apply shadow to the entire temporary canvas
     if (shadow) {
       ctx.shadowColor = "rgba(0, 0, 0, 0.50)";
       ctx.shadowOffsetX = 0;
@@ -45,16 +45,16 @@ const drawForegroundImage = (
       ctx.shadowBlur = 15;
     }
 
-    // Draw the temporary canvas onto the main canvas
+    // draw the temporary canvas onto the main canvas
     ctx.drawImage(tempCanvas, x, y);
 
-    // Reset modifications after drawing fgimg
+    // reset modifications after drawing fgimg
     ctx.shadowColor = "transparent";
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
     ctx.shadowBlur = 0;
   } else {
-    // Only apply drop shadow without rounded corners
+    // only apply drop shadow without rounded corners
     if (shadow) {
       ctx.shadowColor = "rgba(0, 0, 0, 0.50)";
       ctx.shadowOffsetX = 0;
@@ -62,10 +62,10 @@ const drawForegroundImage = (
       ctx.shadowBlur = 15;
     }
 
-    // Draw the image without clipping
+    // draw the image without clipping
     ctx.drawImage(image, x, y, width, height);
 
-    // Reset modifications after drawing fgimg
+    // reset modifications after drawing fgimg
     ctx.shadowColor = "transparent";
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
@@ -156,7 +156,9 @@ const generateImage = () => {
     fgimg.onload = () => {
       // resize highlight image accordingly
 
-      const mantainSizeCheckboxElement = checkboxes[2].shadowRoot.querySelector("#checkbox-mantain-size");
+      const mantainSizeCheckboxElement = checkboxes[2].shadowRoot.querySelector(
+        "#checkbox-mantain-size"
+      );
 
       if (!mantainSizeCheckboxElement) {
         return;
@@ -166,7 +168,6 @@ const generateImage = () => {
       let highlightImageHeight = 350;
 
       if (mantainSizeCheckboxElement.checked) {
-
         highlightImageWidth = fgimg.width * 0.6;
         highlightImageHeight = fgimg.height * 0.6;
 
@@ -178,9 +179,6 @@ const generateImage = () => {
           highlightImageHeight = fgimg.height * 0.5;
         }
       }
-
-      // const highlightImageWidth = 350;
-      // const highlightImageHeight = 350;
 
       // calculate middle of the screen (canvas)
       const middleX = canvas.width / 2 - highlightImageWidth / 2;
@@ -195,18 +193,18 @@ const generateImage = () => {
       if (!roundedCheckboxElement || !shadowCheckboxElement) {
         return;
       }
-        // draw foreground image at the middle of the canvas
-        drawForegroundImage(
-          ctx,
-          fgimg,
-          middleX,
-          middleY,
-          highlightImageWidth,
-          highlightImageHeight,
-          10,
-          roundedCheckboxElement.checked,
-          shadowCheckboxElement.checked
-        );
+      // draw foreground image at the middle of the canvas
+      drawForegroundImage(
+        ctx,
+        fgimg,
+        middleX,
+        middleY,
+        highlightImageWidth,
+        highlightImageHeight,
+        10,
+        roundedCheckboxElement.checked,
+        shadowCheckboxElement.checked
+      );
 
       const base64 = canvas.toDataURL();
 
