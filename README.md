@@ -1,19 +1,34 @@
-# 🌆 `wallpaperize`
+<p align="center">
+  <img width="128" src="repo/wallpaperize-logo.png" alt="logo">
+</p>
+<p align="center">
+  <strong>wallpaperize!</strong>
+  <br>
+  <br>
+  turn your oddly sized images into beautiful wallpapers
+</p>
 
-turn your oddly sized images into beautiful wallpapers
+`wallpaperize!` is a web app made purely with native JS, CSS and HTML.
+
+If you find bugs or glitches feel free to report it in the issues tab. If you want to contribute, you can always make a pull request.
 
 #
 
 <details>
 <summary>todo:</summary>
   
--   bundle malua with webpack version (i will do it once malua first release version is released)
+-   bundle malua with webpack (It will be done after `malua` first release)
 -   improve web app design (add a description, logo, etc)
+-   add a example image in the README.md file
 
 </details>
 
 ***
 
-##### wallpaperize is powered by malua:
+##### wallpaperize! is powered by:
 
 <strong><a href="https://github.com/otvv/malua">malua</a></strong> <img width="18" height="18" src="https://user-images.githubusercontent.com/17851066/213260034-7106851e-74e5-4ec5-a83c-95ce291b356d.png" alt="pill emoji"> Pure CSS and JavaScript menu framework/ui toolkit
+
+#
+
+###### wallpaperize! is based on [backgroundfier](http://backgroundifier.archagon.net/) by archagon
