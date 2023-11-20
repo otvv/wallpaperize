@@ -15,6 +15,8 @@
 This web app is inspired by another app also called [wallpaperize](https://github.com/Philip-Scott/wallpaperize) which was made by [**Philip Scott**](https://github.com/Philip-Scott), unfortunately this app was made exclusively for a Linux distribution called _ElementaryOS_ and the app is not being mantained anymore.
 Since this app was something I've used on a regular basis when I was using ElementaryOS, I've decided to make something more widely available for other Linux distros or even other *OS*`es (As long as it supports a modern web-browser).
 
+<img title="wallpaperize-example" alt="example image of what wallpaperize does" src="repo/wallpaperize-example.png">
+
 If you find bugs or glitches feel free to report it in the issues tab. If you want to contribute, you can always make a pull request.
 
 #
@@ -24,7 +26,7 @@ If you find bugs or glitches feel free to report it in the issues tab. If you wa
   
 -   maybe bundle malua with webpack or turn malua into a sub-module (I might do one of these after `malua` "first" public release)
 -   improve web app design (add a description, logo, mobile friendly design, etc)
--   add an example image in the README.md file
+-   ~~add an example image in the README.md file~~
 
 </details>
 
