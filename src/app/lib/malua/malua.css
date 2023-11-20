@@ -1,0 +1,152 @@
+/*
+*/
+
+/* Defaults */
+* {
+  top: 0;
+  left: 0;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  outline: none;
+
+  box-sizing: unset;
+
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  -o-appearance: none !important;
+  -ms-appearance: none !important; 
+  appearance: none !important;
+
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -o-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+
+  -webkit-user-drag: none !important;
+  -moz-user-drag: none !important;
+
+  user-zoom: fixed;
+
+  /* Font settings */
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: var(--font-normal);
+}
+
+body {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+/* Separators */
+hr {
+  border: 1px dotted var(--separator-border);
+  box-shadow: 0 0 5px 1px var(--shadow);
+}
+
+/* Colors and settings */
+:root {
+  /* font weight */
+  --font-light: 100;
+  --font-normal: 400;
+  --font-semi-bold: 600;
+  --font-bold: 700;
+
+  /* custom font flags */
+  --font-shadow: 2px 1px var(--text-shadow);
+  --font-outline: -webkit-text-stroke: 1.5px var(--text-outline);
+
+  /* separator colors */
+  --separator-border: #41414199;
+
+  /* text colors */
+  --text-color-title: #ffffff;
+  --text-color-normal: #252525ff;
+  --text-color-accent: #8f47ca;
+  --text-color-disabled: #6e6e6e;
+  
+  /* text flags */
+  --text-outline: #242424;
+  --text-warning: #9c9340;
+  --text-shadow: #020202;
+
+  /* shadows */
+  --shadow: #45454580;
+  --colored-shadow: #9654cc9c;
+  --colored-shadow-pulse: #9654cc9c;
+
+  /* panel and header colors */
+  --header-background: #ffffff30;
+  --panel-background: #bdbdbdab;
+  --panel-border: #41414199;
+
+  /* figure frame colors */
+  --figure-frame-background: #ffffffce;
+  --figure-frame-border: #41414199;
+
+  /* button widget colors */
+  --button-background: #ffffff85;
+  --button-border: #6d6d6d;
+  --button-border-active: #3b3b3bb9;
+
+  /* checkbox widget colors */
+  --checkbox-box-background: #ffffff85;
+  --checkbox-background: #ffffff9c;
+  --checkbox-background-disabled: #5c5c5c9c;
+  --checkbox-background-hover: #69696944;
+  --checkbox-background-checked: #6d4c88af;
+
+  /* alert widget colors */
+  --alert-box-background: #bdbdbd3f;
+  --alert-box-border: #41414199;
+  --alert-box-type-success: #60bd49;
+  --alert-box-type-warning: #ffe159;
+  --alert-box-type-error: #e45e5e;
+  --alert-box-type-default: #8b63e7;
+
+  /* groupbox widget colors */
+  --groupbox-background: #ffffff60;
+  --groupbox-border: #41414199;
+
+  /* slider widget colors */
+  --slider-box-background: #ffffff85;
+  --slider-background: #ffffff9c;
+  --slider-thumb-background: #ffffffce;
+  --slider-thumb-background-active: #dbdbdb9f;
+  --slider-thumb-border: #b4b4b499;
+
+  /* textbox widget colors */
+  --textbox-background: #ffffff85;
+  --textbox-border-hover: #9c9c9cb9;
+
+  /* color-picker widget colors */
+  --color-box-background: #ffffff85;
+  --color-background: #ffffff9c;
+  --color-background-disabled: #5c5c5c9c;
+
+  /* modal widget colors */
+  --modal-background: #ffffff85;
+  --modal-border: #6d6d6d;
+  --modal-background-active: #0000004b;
+  --modal-button-background: #2f302fb6;
+  --modal-button-background-active: #e65454ab;
+
+}
+
+/* Shaders */
+.glass {
+  /* WARNING: This can cause performance issues while hardware acceleration is turned off */
+  -webkit-backdrop-filter: blur(25px) !important;
+  backdrop-filter: blur(25px) !important;
+  background-blend-mode: exclusion !important;
+  background-image: url(data:image/png;base64,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) !important;
+}
+.blur {
+  /* WARNING: This can cause performance issues while hardware acceleration is turned off */
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
+}

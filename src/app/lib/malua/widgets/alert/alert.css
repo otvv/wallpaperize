@@ -1,0 +1,91 @@
+/*
+*/
+
+/*
+    alert widget geometry
+*/
+.m-alert-box {
+  display: flex;
+
+  width: fit-content;
+  width: -moz-fit-content;
+
+  height: fit-content;
+  height: -moz-fit-content;
+
+  margin: 15px;
+}
+
+.m-alert {
+  display: inline-flex;
+  align-items: center;
+
+  min-width: 450px;
+  min-height: 50px;
+
+  background: var(--alert-box-background);
+  box-shadow: 0 0 5px 1px var(--shadow);
+
+  border: 1px solid var(--alert-box-border);
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  z-index: 9999;
+}
+
+.m-alert-label {
+  color: var(--text-color-title);
+  text-shadow: var(--font-shadow);
+}
+
+/*
+    alert types
+*/
+.m-alert-default {
+  justify-content: center;
+  border-top: 4px solid var(--alert-box-type-default);
+}
+
+.m-alert-success {
+  padding-left: 10px;
+  border-left: 7px solid var(--alert-box-type-success);
+}
+
+.m-alert-warning {
+  padding-left: 10px;
+  border-left: 7px solid var(--alert-box-type-warning);
+}
+
+.m-alert-error {
+  padding-left: 10px;
+  border-left: 7px solid var(--alert-box-type-error);
+}
+
+.m-alert-pulse {
+  padding-left: 10px;
+  animation: ease-in-out pulse 1.5s infinite;
+  border-left: 7px solid var(--alert-box-type-default);
+}
+
+/*
+    alert animations
+*/
+
+/* TODO: move this to dedicated file */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 5px 1px var(--shadow);
+  }
+
+  75% {
+    transform: scale(1.03);
+    box-shadow: 0 0 5px 1px var(--colored-shadow-pulse);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 5px 1px var(--shadow);
+  }
+}

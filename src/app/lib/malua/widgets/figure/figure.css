@@ -1,0 +1,22 @@
+/*
+*/
+
+/*
+    figure widget geometry
+*/
+.m-figure {
+  position: static;
+
+  margin: 5px 5px;
+
+  width: -moz-fit-content;
+  width: fit-content;
+
+  height: -moz-fit-content;
+  height: fit-content;
+
+  background-color: var(--figure-frame-background);
+  box-shadow: 0 0 5px 1px var(--shadow);
+
+  border-radius: 5px;
+}

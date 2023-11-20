@@ -1,0 +1,73 @@
+/*
+*/
+
+/*
+    checkbox widget geometry
+*/
+.m-checkbox-box {
+  display: flex;
+  align-items: center;
+
+  width: 85%;
+  height: 23px;
+
+  margin: 5px auto;
+
+  padding-left: 5px;
+  padding-bottom: 2px;
+
+  background-color: var(--checkbox-box-background);
+  box-shadow: 0 0 5px 1px var(--shadow);
+
+  border-radius: 5px;
+}
+
+.m-checkbox {
+  width: 13px;
+  height: 13px;
+
+  background-color: var(--checkbox-background);
+  box-shadow: 0 0 5px 1px var(--shadow);
+
+  margin-left: 5px;
+
+  border-radius: 4px;
+}
+
+.m-checkbox-label {
+  padding-left: 7px;
+  color: var(--text-color-normal);
+}
+
+/*
+    checkbox widget custom states
+*/
+.m-checkbox:hover {
+  cursor: pointer;
+
+  width: 9px;
+  height: 9px;
+
+  border: 2px solid var(--checkbox-background);
+  background-color: var(--checkbox-background-hover);
+}
+
+.m-checkbox:checked {
+  width: 9px;
+  height: 9px;
+
+  border: 2px solid var(--checkbox-background);
+  background-color: var(--checkbox-background-checked);
+}
+
+.m-checkbox:disabled {
+  cursor: not-allowed;
+
+  background-color: var(--checkbox-background-disabled);
+}
+
+.m-checkbox-label:disabled {
+  cursor: not-allowed;
+
+  color: var(--text-color-disabled);
+}

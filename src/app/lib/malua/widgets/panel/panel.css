@@ -1,0 +1,96 @@
+/*
+*/
+
+/*
+    panel header geometry
+*/
+.m-panel-header {
+  width: fit-content;
+  width: -moz-fit-content;
+  height: 55px;
+
+  background-color: var(--header-background);
+  box-shadow: 0 0 5px 1px var(--shadow);
+
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+
+  z-index: -1;
+}
+
+/* 
+    panel header image container
+*/
+.m-panel-header-image-container {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 4px;
+
+  background: transparent;
+
+  width: fit-content;
+  width: -moz-fit-content;
+  height: 45px;
+}
+
+/*
+    panel header label
+*/
+.m-panel-header-label {
+  color: var(--text-color-title);
+  text-shadow: var(--font-shadow);
+
+  padding-left: 10px;
+  font-size: 14px;
+}
+
+/*
+    panel widget geometry
+*/
+.m-panel {
+  position: absolute;
+
+  border: 1px solid var(--panel-border);
+  background-color: var(--panel-background);
+
+  box-shadow: 0 0 5px 1px var(--shadow);
+
+  border-radius: 8px;
+
+  z-index: -1;
+}
+
+.m-panel-widget-area {
+  display: flex;
+  position: absolute;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  /* prolly redundant cause i'm setting it globally on the file body but still,
+  better be safe than sorry _(im talking to you ultralight)_ */
+  overflow-x: auto;
+  overflow-y: auto;
+
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+
+  z-index: -1;
+}
+
+/*
+    panel header custom states
+*/
+.m-panel-header:hover {
+  cursor: grab;
+}
+
+.m-panel-header:active {
+  cursor: grabbing;
+  box-shadow: 0 0 3px 1px var(--shadow);
+}

@@ -1,0 +1,82 @@
+/*
+ */
+
+"use strict";
+
+class MGroupBox extends MMalua {
+  // @brief: widget constructor (don't touch this unless you know what you're doing!)
+  constructor() {
+    // ..
+    super();
+
+    // create shadow root
+    const shadow = this.attachShadow({ mode: "open" });
+    shadow.innerHTML = `
+          <link rel="stylesheet" href="lib/malua/malua.css">
+          <link rel="stylesheet" href="lib/malua/widgets/groupbox/groupbox.css">
+          <fieldset class="m-groupbox">
+          <legend class="m-groupbox-label"></legend>
+          </fieldset>
+        `;
+
+    // fieldset wrapper
+    const fieldsetElement = shadow.querySelector("fieldset");
+
+    // fieldset title
+    const fieldsetLegendElement = shadow.querySelector("legend");
+
+    // list of attributes to look for
+    const attributesToSet = [
+      "label",
+      "id",
+      "shader",
+      "effect",
+      "x",
+      "y",
+      "top",
+      "left",
+      "width",
+      "height",
+    ];
+
+    // set attributes if present
+    attributesToSet.forEach((attribute) => {
+      this.setAttributeWhenPresent(fieldsetElement, attribute);
+    });
+
+    // set fieldset label and string attribution
+    const elementLabel = this.getAttribute("label");
+    this.setLabel(fieldsetLegendElement, elementLabel);
+
+    if (fieldsetElement.id.length > 0) {
+      fieldsetLegendElement.setAttribute("for", fieldsetElement.id);
+    }
+
+    // set fieldset abs pos
+    const elementPosition = [
+      this.getAttribute("x") || this.getAttribute("left"),
+      this.getAttribute("y") || this.getAttribute("top"),
+    ];
+    this.setPosition(fieldsetElement, elementPosition);
+
+    // set fieldset size
+    const elementSize = [
+      this.getAttribute("width"),
+      this.getAttribute("height"),
+    ];
+    this.setSize(fieldsetElement, elementSize);
+
+    // set fieldset shader
+    const elementShader =
+      this.getAttribute("shader") || this.getAttribute("effect");
+    this.setShader(fieldsetElement, elementShader);
+
+    // handle child elements
+    for (let i = 1; i < this.childNodes.length; i++) {
+      fieldsetElement.appendChild(this.childNodes[i]);
+    }
+  }
+}
+
+// define the new element
+customElements.define("m-groupbox", MGroupBox);

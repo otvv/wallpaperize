@@ -1,0 +1,60 @@
+/*
+*/
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+section {
+  flex: 1;
+  background-color: #2a262e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+}
+
+a {
+  appearance: unset;
+  text-decoration: none;
+  color: #f1f1f1;
+  font-weight: 700;
+}
+
+label {
+  display: block;
+  text-align: center;
+}
+
+footer {
+  width: 100%;
+  text-align: center;
+
+  padding: 10px;
+  background-color: #19161b;
+  border-top: 1px solid #46404d;
+  color: #ffffff;
+}
+
+.m-file {
+  display: none;
+}
+
+.pill-container {
+  display: flex;
+  flex-direction: row; 
+  justify-content: center;
+
+  align-items: center;
+}
+
+.pill {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  margin-left: 3px;
+}

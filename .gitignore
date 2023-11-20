@@ -1,0 +1,5 @@
+.vscode/
+node_modules/
+src/app/lib/malua/.vscode/
+src/app/lib/malua/node_modules/
+src/app/lib/malua/*.html
