@@ -19,13 +19,21 @@
 </head>
 
 <body>
+  <header>
+    <span class="span-container">
+      <img class="logo" src="https://raw.githubusercontent.com/otvv/wallpaperize/main/repo/wallpaperize-logo.png"
+        width="35px" height="35px" alt="wallpaperize logo">
+      <span class="title">wallpaperize</span>!
+    </span>
+  </header>
   <section>
     <label id="fileLabel">no image loaded</label>
-    <input style="display: none;" class="m-file" placeholder="Choose image file to upload" title="load image"
+    <input style="display: none;" placeholder="Choose image file to upload" title="load image"
       id="fileInput" type="file" accept="image/*" />
-    <m-button label="load image" width="290" onclick="document.getElementById('fileInput').click();"></m-button>
+    <m-button shader="blur" label="load image" width="290"
+      onclick="document.getElementById('fileInput').click();"></m-button>
 
-    <m-groupbox label="custom settings" width="300" height="240">
+    <m-groupbox shader="blur" label="custom settings" width="300" height="240">
       <m-textbox id="textbox-width" placeholder="width: 1920" width="250"></m-textbox>
       <m-textbox id="textbox-height" placeholder="height: 1080" width="250"></m-textbox>
 
@@ -35,19 +43,21 @@
       <m-checkbox id="checkbox-shadow" width="255" label="add drop shadow"
         placeholder="adds a subtle shadow in the highlighted image (center image)" checked="true""></m-checkbox>
         
-        <m-checkbox id="checkbox-mantain-size" width="255" label="keep original size"
+        <m-checkbox id=" checkbox-mantain-size" width="255" label="keep original size"
         placeholder="keeps the highlighted image aspect ration and original size" checked="false""></m-checkbox>
-
-        <m-button label=" wallpaperize!" width="248" onclick="generateImage()"></m-button>
+        
+        <m-button shader="blur" label="wallpaperize!" width="248" height="23" onclick="generateImage()"></m-button>
     </m-groupbox>
 
-    <!--TODO: add a little preview image of the end result somewhere around here-->
+    <br>
+    <!--TODO: add a little preview of the end result somewhere around here-->
   </section>
 
   <footer>
     <span>made with &#128156 by </span><a href="https://github.com/otvv/">otvv</a><br>
-    <span class="pill-container">powered by
-      <a href="https://github.com/otvv/malua"><img class="pill" src="https://raw.githubusercontent.com/otvv/wallpaperize/main/repo/malua-logo.png" width="18px" height="18px"
+    <span class="span-container">powered by
+      <a href="https://github.com/otvv/malua"><img class="pill"
+          src="https://raw.githubusercontent.com/otvv/wallpaperize/main/repo/malua-logo.png" width="18px" height="18px"
           alt="malua ui logo"></a>
     </span>
   </footer>

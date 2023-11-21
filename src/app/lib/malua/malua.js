@@ -135,7 +135,11 @@ class MMalua extends HTMLElement {
     }
 
     if (shader) {
-      element.classList.add(shader, additional);
+      if (additional) {
+        element.classList.add(shader,additional);
+      } else {
+        element.classList.add(shader);
+      }
     }
   }
 

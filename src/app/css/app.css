@@ -2,27 +2,29 @@
 */
 
 body {
-  margin: 0;
   display: flex;
   flex-direction: column;
+  
+  margin: 0;
   min-height: 100vh;
 }
 
 section {
   flex: 1;
-  background-color: #2a262e;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #ffffff;
+  
+  background-color: #1b191d;
+  color: var(--text-color-title);
 }
 
 a {
-  appearance: unset;
   text-decoration: none;
-  color: #f1f1f1;
-  font-weight: 700;
+
+  color: var(--text-color-title);
+  font-weight: var(--font-bold);
 }
 
 label {
@@ -30,21 +32,27 @@ label {
   text-align: center;
 }
 
+header {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  
+  background-color: #19161b;
+  border-bottom: 1px solid #5d5c5f70;
+  color: var(--text-color-title);
+}
+
 footer {
   width: 100%;
+  padding: 10px;
   text-align: center;
 
-  padding: 10px;
   background-color: #19161b;
-  border-top: 1px solid #46404d;
-  color: #ffffff;
+  border-top: 1px solid #5d5c5f70;
+  color: var(--text-color-title);
 }
 
-.m-file {
-  display: none;
-}
-
-.pill-container {
+.span-container {
   display: flex;
   flex-direction: row; 
   justify-content: center;
@@ -52,9 +60,11 @@ footer {
   align-items: center;
 }
 
+.title {
+  font-weight: var(--font-bold)
+}
+
 .pill {
-  width: 18px;
-  height: 18px;
   margin-top: 2px;
   margin-left: 3px;
 }

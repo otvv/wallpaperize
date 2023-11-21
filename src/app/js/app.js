@@ -8,7 +8,7 @@ const fileLabel = document.querySelector("#fileLabel");
 const checkboxes = document.querySelectorAll("m-checkbox");
 const textboxes = document.querySelectorAll("m-textbox");
 
-const drawForegroundImage = (
+const drawHighlightImage = (
   ctx,
   image,
   x,
@@ -154,8 +154,6 @@ const generateImage = () => {
 
     // generate highlight image
     fgimg.onload = () => {
-      // resize highlight image accordingly
-
       const mantainSizeCheckboxElement = checkboxes[2].shadowRoot.querySelector(
         "#checkbox-mantain-size"
       );
@@ -167,6 +165,7 @@ const generateImage = () => {
       let highlightImageWidth = 350;
       let highlightImageHeight = 350;
 
+      // resize highlight image accordingly
       if (mantainSizeCheckboxElement.checked) {
         highlightImageWidth = fgimg.width * 0.6;
         highlightImageHeight = fgimg.height * 0.6;
@@ -194,7 +193,7 @@ const generateImage = () => {
         return;
       }
       // draw foreground image at the middle of the canvas
-      drawForegroundImage(
+      drawHighlightImage(
         ctx,
         fgimg,
         middleX,
