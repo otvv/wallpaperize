@@ -85,7 +85,7 @@ class MMalua extends HTMLElement {
     }
 
     if (placeholder) {
-      element.placeholder = title;
+      element.placeholder = placeholder;
     }
   }
 

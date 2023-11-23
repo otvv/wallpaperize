@@ -50,7 +50,7 @@ class MButton extends MMalua {
 
     // set button size
     const elementSize = [
-      this.getAttribute("width") || "fit-content" || "-moz-fit-content",
+      this.getAttribute("width") || "fit-content",
       this.getAttribute("height"),
     ];
     this.setSize(buttonElement, elementSize);

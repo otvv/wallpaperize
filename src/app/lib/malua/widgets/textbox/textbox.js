@@ -83,6 +83,14 @@ class MTextBox extends MMalua {
       this.getAttribute("height"),
     ];
     this.setSize(textboxElement, elementSize);
+
+    // set textbox id
+    if (this.hasAttribute("id")) {
+      textboxElement.setAttribute("id", this.getAttribute("id"));
+    }
+
+    // this fixes some incompatibility issues
+    this.removeAttribute("id");
   }
 }
 

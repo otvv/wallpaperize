@@ -36,12 +36,10 @@ class MSlider extends MMalua {
     const attributesToSet = [
       "label",
       "id",
-      "placeholder",
       "sufix",
       "value",
       "min",
       "max",
-      "padding",
       "x",
       "y",
       "top",
@@ -55,23 +53,16 @@ class MSlider extends MMalua {
       this.setAttributeWhenPresent(sliderElement, attribute);
     });
 
-    // slider title and string attribution
-    sliderLabelElement.textContent = this.getAttribute("label");
-
-    if (sliderElement.id.length > 0) {
-      sliderLabelElement.setAttribute("for", sliderElement.id);
-    }
-
     // set default value
     sliderOutput.textContent = sufix
-      ? `${+sliderElement.valueAsNumber} (${sufix})`
-      : +sliderElement.valueAsNumber;
+      ? `${sliderElement.valueAsNumber} (${sufix})`
+      : sliderElement.valueAsNumber;
 
     // update slider
     sliderElement.oninput = (event) => {
       sliderOutput.innerHTML = sufix
-        ? `${+event.target.valueAsNumber} (${sufix})`
-        : +event.target.valueAsNumber;
+        ? `${event.target.valueAsNumber} (${sufix})`
+        : event.target.valueAsNumber;
     };
 
     // set slider div box abs pos
@@ -95,6 +86,23 @@ class MSlider extends MMalua {
       sliderOutput.style.paddingTop = "10px";
       sliderOutput.style.paddingBottom = "10px";
     }
+
+    // set slider label
+    const elementLabel = this.getAttribute("label");
+    this.setLabel(sliderLabelElement, elementLabel, true);
+
+    // set slider placeholder
+    const elementPlaceholder = this.getAttribute("placeholder");
+    this.setPlaceholder(sliderElement, elementPlaceholder);
+
+    // set slider id and string attribution
+    if (this.hasAttribute("id")) {
+      sliderElement.setAttribute("id", this.getAttribute("id"));
+      sliderLabelElement.setAttribute("for", sliderElement.id);
+    }
+
+    // this fixes some incompatibility issues
+    this.removeAttribute("id");
   }
 }
 

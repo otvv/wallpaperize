@@ -60,7 +60,7 @@ class MAlert extends MMalua {
       "width",
       "height",
     ];
-
+    
     // apply alert attributes
     attributesToSet.forEach((attribute) => {
       this.setAttributeWhenPresent(alertSpanElement, attribute);

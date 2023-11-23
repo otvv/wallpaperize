@@ -106,8 +106,6 @@ const generateImage = () => {
     return;
   }
 
-  console.log("[wallpaperize] - textboxes", textboxes);
-
   // get desired wallpaper size
   const widthTextboxElement =
     textboxes[0].shadowRoot.querySelector("#textbox-width");
@@ -167,15 +165,15 @@ const generateImage = () => {
 
       // resize highlight image accordingly
       if (mantainSizeCheckboxElement.checked) {
-        highlightImageWidth = fgimg.width * 0.6;
-        highlightImageHeight = fgimg.height * 0.6;
+        highlightImageWidth = +fgimg.width * 0.6;
+        highlightImageHeight = +fgimg.height * 0.6;
 
-        if (highlightImageWidth >= customWidth) {
-          highlightImageWidth = fgimg.width * 0.5;
+        if (highlightImageWidth >= +customWidth) {
+          highlightImageWidth = +fgimg.width * 0.5;
         }
 
-        if (highlightImageHeight >= customHeight) {
-          highlightImageHeight = fgimg.height * 0.5;
+        if (highlightImageHeight >= +customHeight) {
+          highlightImageHeight = +fgimg.height * 0.5;
         }
       }
 
@@ -192,7 +190,10 @@ const generateImage = () => {
       if (!roundedCheckboxElement || !shadowCheckboxElement) {
         return;
       }
-      // draw foreground image at the middle of the canvas
+
+      const highlightImageRadius = 10;
+
+      // draw highglight image at the middle of the canvas
       drawHighlightImage(
         ctx,
         fgimg,
@@ -200,7 +201,7 @@ const generateImage = () => {
         middleY,
         highlightImageWidth,
         highlightImageHeight,
-        10,
+        highlightImageRadius,
         roundedCheckboxElement.checked,
         shadowCheckboxElement.checked
       );
@@ -223,9 +224,10 @@ fileInput.addEventListener("change", (event) => {
     return;
   }
 
-  // clamp file name
   const limit = 15;
   let truncatedString = "null";
+  
+  // clamp file name
   if (currFile[0].name.length >= limit) {
     truncatedString = `${currFile[0].name.substring(0, limit)}...`;
   } else {

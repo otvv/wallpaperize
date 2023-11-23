@@ -46,7 +46,11 @@ class MFigure extends MMalua {
     // set figure source
     const imageSource = this.getAttribute("src");
     figureElement.setAttribute("src", imageSource); // (for some reason the "setAttributeWhenPresent" function
-    // is not setting the image properly)
+                                                    // is not setting the image properly)
+
+    // set alternative text
+    const imageAlt = this.getAttribute("alt");
+    figureElement.setAttribute("alt", imageAlt);
 
     // set border radius
     figureElement.style.borderRadius = this.getAttribute("radius");
@@ -60,8 +64,8 @@ class MFigure extends MMalua {
 
     // set figure size
     const elementSize = [
-      this.getAttribute("width") || "-moz-fit-content" || "fit-content",
-      this.getAttribute("height") || "-moz-fit-content" || "fit-content",
+      this.getAttribute("width") || "fit-content",
+      this.getAttribute("height") || "fit-content",
     ];
     this.setSize(figureElement, elementSize);
   }

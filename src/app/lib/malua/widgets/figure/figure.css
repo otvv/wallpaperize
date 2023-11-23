@@ -9,10 +9,7 @@
 
   margin: 5px 5px;
 
-  width: -moz-fit-content;
   width: fit-content;
-
-  height: -moz-fit-content;
   height: fit-content;
 
   background-color: var(--figure-frame-background);

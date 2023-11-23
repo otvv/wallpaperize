@@ -52,6 +52,10 @@ footer {
   color: var(--text-color-title);
 }
 
+.input-file {
+  display: none;
+}
+
 .span-container {
   display: flex;
   flex-direction: row; 

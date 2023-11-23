@@ -145,7 +145,6 @@ class MPanel extends HTMLElement {
     const attributesToSet = [
       "title",
       "id",
-      "src",
       "shader",
       "effect",
       "x",
@@ -165,8 +164,7 @@ class MPanel extends HTMLElement {
     panelLabelElement.textContent = this.getAttribute("label");
 
     // set panel size
-    panelElement.style.width =
-      this.getAttribute("width") || "-moz-fit-content" || "fit-content";
+    panelElement.style.width = this.getAttribute("width") || "fit-content";
     panelElement.style.height = this.getAttribute("height");
 
     // NOTE: these are fixed values because of artistic reasons,
@@ -184,12 +182,13 @@ class MPanel extends HTMLElement {
       panelWidgetArea.style.position = "absolute";
     }
 
-    // set panel image source
+    // set panel image source and alt text
     panelImageElement.src = this.getAttribute("src");
+    panelImageElement.alt = this.getAttribute("alt");
 
     // set panel header and widget area size
     panelHeaderElement.style.width =
-      this.getAttribute("width") || "-moz-fit-content" || "fit-content";
+      this.getAttribute("width") || "fit-content";
 
     // set panel pos
     panelElement.style.left =

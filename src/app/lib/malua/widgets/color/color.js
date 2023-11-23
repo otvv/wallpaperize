@@ -49,13 +49,9 @@ class MColor extends MMalua {
       this.setAttributeWhenPresent(colorButtonElement, attribute);
     });
 
-    // set colorpicker label and string attribution
+    // set colorpicker label
     const elementLabel = this.getAttribute("label");
-    this.setLabel(colorButtonLabelElement, elementLabel);
-
-    if (colorButtonElement.id.length > 0) {
-      colorButtonLabelElement.setAttribute("for", colorButtonElement.id);
-    }
+    this.setLabel(colorButtonLabelElement, elementLabel, true);
 
     // set default color
     const elementValue =
@@ -71,10 +67,23 @@ class MColor extends MMalua {
 
     // set colorpicker box div size
     const elementSize = [
-      this.getAttribute("width") || "-moz-fit-content" || "fit-content",
+      this.getAttribute("width") || "fit-content",
       this.getAttribute("height"),
     ];
     this.setSize(boxDivElement, elementSize);
+
+    // set slider placeholder
+    const elementPlaceholder = this.getAttribute("placeholder");
+    this.setPlaceholder(colorButtonElement, elementPlaceholder);
+
+    // set colorpicker id and string attribution
+    if (this.hasAttribute("id")) {
+      colorButtonElement.setAttribute("id", this.getAttribute("id"));
+      colorButtonLabelElement.setAttribute("for", colorButtonElement.id);
+    }
+
+    // this fixes some incompatibility issues
+    this.removeAttribute("id");
   }
 }
 

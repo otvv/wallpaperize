@@ -10,12 +10,12 @@
   <script src="js/app.js" defer></script>
 
   <!--malua-->
+  <link rel="stylesheet" type="text/css" href="lib/malua/malua.css" />
   <script src="lib/malua/malua.js" defer></script>
   <script src="lib/malua/widgets/button/button.js" defer></script>
   <script src="lib/malua/widgets/checkbox/checkbox.js" defer></script>
   <script src="lib/malua/widgets/groupbox/groupbox.js" defer></script>
   <script src="lib/malua/widgets/textbox/textbox.js" defer></script>
-  <link rel="stylesheet" type="text/css" href="lib/malua/malua.css" />
 </head>
 
 <body>
@@ -28,8 +28,8 @@
   </header>
   <section>
     <label id="fileLabel">no image loaded</label>
-    <input style="display: none;" placeholder="Choose image file to upload" title="load image"
-      id="fileInput" type="file" accept="image/*" />
+    <input class="input-file" placeholder="Choose image file to upload" title="load image" id="fileInput"
+      type="file" accept="image/*" />
     <m-button shader="blur" label="load image" width="290"
       onclick="document.getElementById('fileInput').click();"></m-button>
 
@@ -43,7 +43,7 @@
       <m-checkbox id="checkbox-shadow" width="255" label="add drop shadow"
         placeholder="adds a subtle shadow in the highlighted image (center image)" checked="true""></m-checkbox>
         
-        <m-checkbox id=" checkbox-mantain-size" width="255" label="keep original size"
+        <m-checkbox id="checkbox-mantain-size" width="255" label="keep original size"
         placeholder="keeps the highlighted image aspect ration and original size" checked="false""></m-checkbox>
         
         <m-button shader="blur" label="wallpaperize!" width="248" height="23" onclick="generateImage()"></m-button>
