@@ -20,6 +20,14 @@ class MTextBox extends MMalua {
     }
   };
 
+  // @brief: perform initial operations when mounting element
+  connectedCallback() {
+    const textboxElement = this.shadowRoot.querySelector(".m-textbox");
+
+    // set textbox default text
+    this.setValue(textboxElement, this.getAttribute("text") || this.getAttribute("value"));
+  }
+
   // @brief: widget constructor (don't touch this unless you know what you're doing!)
   constructor() {
     // ..
@@ -28,8 +36,7 @@ class MTextBox extends MMalua {
     // create shadow root
     const shadow = this.attachShadow({ mode: "open" });
     shadow.innerHTML = `
-          <link rel="stylesheet" href="lib/malua/malua.css">
-          <link rel="stylesheet" href="lib/malua/widgets/textbox/textbox.css">
+          ${globalMaluaStyleInclude}
           <input class="m-textbox" type="text">
         `;
 
@@ -56,19 +63,10 @@ class MTextBox extends MMalua {
       this.setAttributeWhenPresent(textboxElement, attribute);
     });
 
-    // set textbox default value
-    textboxElement.placeholder =
-      this.getAttribute("text") || this.getAttribute("value") || "";
-
     // set textbox label
     const elementLabel =
       this.getAttribute("label") || this.getAttribute("placeholder");
     this.setLabel(textboxElement, elementLabel);
-
-    // set textbox default value
-    const elementValue =
-      this.getAttribute("text") || this.getAttribute("value");
-    this.setValue(textboxElement, elementValue);
 
     // set textbox abs pos
     const elementPosition = [

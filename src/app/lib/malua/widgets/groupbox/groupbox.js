@@ -12,10 +12,9 @@ class MGroupBox extends MMalua {
     // create shadow root
     const shadow = this.attachShadow({ mode: "open" });
     shadow.innerHTML = `
-          <link rel="stylesheet" href="lib/malua/malua.css">
-          <link rel="stylesheet" href="lib/malua/widgets/groupbox/groupbox.css">
+          ${globalMaluaStyleInclude}
           <fieldset class="m-groupbox">
-          <legend class="m-groupbox-label"></legend>
+          <legend class="m-groupbox-label"/>
           </fieldset>
         `;
 
@@ -44,14 +43,6 @@ class MGroupBox extends MMalua {
       this.setAttributeWhenPresent(fieldsetElement, attribute);
     });
 
-    // set fieldset label and string attribution
-    const elementLabel = this.getAttribute("label");
-    this.setLabel(fieldsetLegendElement, elementLabel);
-
-    if (fieldsetElement.id.length > 0) {
-      fieldsetLegendElement.setAttribute("for", fieldsetElement.id);
-    }
-
     // set fieldset abs pos
     const elementPosition = [
       this.getAttribute("x") || this.getAttribute("left"),
@@ -70,6 +61,19 @@ class MGroupBox extends MMalua {
     const elementShader =
       this.getAttribute("shader") || this.getAttribute("effect");
     this.setShader(fieldsetElement, elementShader);
+
+    // set fieldset label
+    const elementLabel = this.getAttribute("label");
+    this.setLabel(fieldsetLegendElement, elementLabel);
+
+    // set fieldset id and string attribution
+    if (this.hasAttribute("id")) {
+      fieldsetElement.setAttribute("id", this.getAttribute("id"));
+      fieldsetLegendElement.setAttribute("for", fieldsetElement.id);
+    }
+
+    // this fixes some incompatibility issues
+    this.removeAttribute("id");
 
     // handle child elements
     for (let i = 1; i < this.childNodes.length; i++) {

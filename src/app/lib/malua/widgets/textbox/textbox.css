@@ -10,7 +10,8 @@
   justify-content: center;
   align-items: center;
 
-  width: 84%; /* NOTE: the wonky % value is to compensate the 5px left-padding. */
+  width: 85%; /* NOTE: the wonky % value is to compensate the 5px left-padding from the 
+                      textbox placeholder text/current typed text. */
   height: 25px;
 
   margin: 5px auto;
@@ -24,20 +25,26 @@
 
   caret-color: var(--text-color-normal);
   color: var(--text-color-normal);
+
+  transition: 0.1s;
 }
 
 .m-textbox:placeholder-shown {
   caret-color: transparent;
 }
 
+.m-textbox::-moz-placeholder{
+  color: var(--text-color-normal) !important;
+}
+
 .m-textbox::placeholder {
-  color: var(--text-color-normal);
+  color: var(--text-color-normal) !important;
 }
 
 /*
     button widget custom states
 */
 .m-textbox:focus {
-  border: 1px solid var(--textbox-border-hover);
   box-shadow: inset 0 0 5px 1px var(--colored-shadow);
+  border: 1px solid var(--textbox-border-active);
 }

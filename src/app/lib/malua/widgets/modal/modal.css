@@ -62,6 +62,8 @@
   display: block;
   position: fixed;
 
+  z-index: 9999;
+
   background-color: var(--modal-background-active);
 
   width: 100%;

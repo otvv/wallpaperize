@@ -6,26 +6,27 @@
 */
 .m-groupbox {
   display: flex;
-
   flex-direction: column;
   flex-basis: content;
   align-content: space-around;
-
+  justify-content: flex-start;
   overflow-y: auto;
-
   margin: auto 5px;
-
   background-color: var(--groupbox-background);
   border: 1px solid var(--groupbox-border);
   box-shadow: 0 0 5px 1px var(--shadow);
-
   border-radius: 5px;
+  align-items: stretch;
 }
 
+/*
+    groupbox label
+*/
 .m-groupbox-label {
+  display: inline;
   color: var(--text-color-title);
   text-shadow: var(--font-shadow);
-
-  padding-left: 10px;
+  padding-left: 5px;
+  padding-bottom: 3px;
   font-size: 13px;
 }

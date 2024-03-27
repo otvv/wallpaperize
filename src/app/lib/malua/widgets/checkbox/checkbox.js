@@ -4,6 +4,20 @@
 "use strict";
 
 class MCheckBox extends MMalua {
+  // @brief: perform initial operations when mounting element
+  connectedCallback() {
+    const checkboxElement = this.shadowRoot.querySelector(".m-checkbox");
+
+    // set color button default color
+    this.setState(
+      checkboxElement,
+      this.getAttribute("checked") ||
+        this.getAttribute("value") ||
+        this.getAttribute("state") ||
+        false
+    );
+  }
+
   // @brief: widget constructor (don't touch this unless you know what you're doing!)
   constructor() {
     // ..
@@ -12,17 +26,16 @@ class MCheckBox extends MMalua {
     // create shadow root
     const shadow = this.attachShadow({ mode: "open" });
     shadow.innerHTML = `
-          <link rel="stylesheet" href="lib/malua/malua.css">
-          <link rel="stylesheet" href="lib/malua/widgets/checkbox/checkbox.css">
-          <div class="m-checkbox-box">
-          <input class="m-checkbox" type="checkbox">
-          <label class="m-checkbox-label"></label>
-          </div>
+          ${globalMaluaStyleInclude}
+          <span class="m-checkbox-box">
+            <input class="m-checkbox" type="checkbox">
+            <label class="m-checkbox-label"></label>
+          </span>
         `;
 
     // checkbox input wrapper and box div
     const checkboxElement = shadow.querySelector("input");
-    const boxDivElement = shadow.querySelector("div");
+    const boxSpanElement = shadow.querySelector("span");
 
     // checkbox input title
     const checkboxLabelElement = shadow.querySelector("label");
@@ -48,30 +61,24 @@ class MCheckBox extends MMalua {
       this.setAttributeWhenPresent(checkboxElement, attribute);
     });
 
-    // set default checkbox state
-    const elementState =
-      this.getAttribute("checked") ||
-      this.getAttribute("value") ||
-      this.getAttribute("state");
-    this.setState(checkboxElement, elementState);
-
     // set checkbox div box abs pos
     const elementPosition = [
       this.getAttribute("x") || this.getAttribute("left"),
       this.getAttribute("y") || this.getAttribute("top"),
     ];
-    this.setPosition(boxDivElement, elementPosition);
+    this.setPosition(boxSpanElement, elementPosition);
 
     // set checkbox box div size
     const elementSize = [
-      this.getAttribute("width") || "fit-content",
+      this.getAttribute("width") || "moz-fit-content" || "fit-content",
       this.getAttribute("height"),
     ];
-    this.setSize(boxDivElement, elementSize);
+    this.setSize(boxSpanElement, elementSize);
 
     // set checkbox label
     const elementLabel = this.getAttribute("label");
     this.setLabel(checkboxLabelElement, elementLabel, true);
+    checkboxElement.title = elementLabel;
 
     // set checkbox placeholder
     const elementPlaceholder = this.getAttribute("placeholder");

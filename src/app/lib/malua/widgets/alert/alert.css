@@ -7,7 +7,10 @@
 .m-alert-box {
   display: flex;
 
+  width: moz-fit-content;
   width: fit-content;
+
+  height: moz-fit-content;
   height: fit-content;
 
   margin: 15px;
@@ -28,7 +31,7 @@
 
   cursor: pointer;
 
-  z-index: 9999;
+  z-index: 0;
 }
 
 .m-alert-label {

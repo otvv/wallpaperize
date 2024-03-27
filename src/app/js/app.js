@@ -135,10 +135,14 @@ const generateImage = () => {
     const scaleFactorX = canvas.width / bgimg.width;
     const scaleFactorY = canvas.height / bgimg.height;
     const scaleFactor = Math.max(scaleFactorX, scaleFactorY);
-
+    
+    // zoonFactor (in pixels) (this is used to avoid a weird white border/blured edge 
+    // in the blurred background of the wallpaper)
+    const zoomFactor = 100;
+    
     // calculate the new dimensions to fill the canvas
-    const scaledWidth = bgimg.width * scaleFactor;
-    const scaledHeight = bgimg.height * scaleFactor;
+    const scaledWidth = (bgimg.width * scaleFactor) + zoomFactor;
+    const scaledHeight = (bgimg.height * scaleFactor) + zoomFactor;
 
     // calculate the position to center the image
     const offsetX = (canvas.width - scaledWidth) / 2;
@@ -146,7 +150,6 @@ const generateImage = () => {
 
     // draw background image
     ctx.filter = "blur(35px)";
-    ctx.transform = "scale(1.1)"; // get rid of uggly white border
     ctx.drawImage(bgimg, offsetX, offsetY, scaledWidth, scaledHeight);
     ctx.filter = "none";
 
@@ -159,6 +162,7 @@ const generateImage = () => {
       if (!mantainSizeCheckboxElement) {
         return;
       }
+      
 
       let highlightImageWidth = 350;
       let highlightImageHeight = 350;

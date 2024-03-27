@@ -1,0 +1,47 @@
+/*
+*/
+
+/*
+    listbox widget geometry
+*/
+.m-listbox {
+  overflow-y: auto;
+  margin: auto 5px;
+
+  width: 250px;
+  height: moz-fit-content;
+  height: fit-content;
+
+  border-radius: 5px;
+  border: 1px solid var(--listbox-border);
+  background-color: var(--listbox-background);
+
+  box-shadow: 0 0 5px 1px var(--shadow);
+}
+
+.m-listbox option {
+  background-color: var(--listbox-option-hover);
+  box-shadow: 0px 0px 1px 0px var(--shadow);
+  padding: 3px;
+}
+
+.m-listbox option:hover {
+  color: var(--text-color-accent-alt);
+}
+
+.m-listbox option:checked,
+.m-listbox option:focus,
+.m-listbox option::selection,
+.m-listbox option:active {
+  background-color: var(--listbox-option-checked) !important;
+
+  appearance: none;
+}
+
+/*
+    listbox label
+*/
+.m-listbox-label {
+  position: inherit;
+  margin: auto 5px;
+}

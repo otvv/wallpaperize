@@ -4,16 +4,40 @@
 /*
     figure widget geometry
 */
-.m-figure {
-  position: static;
+.m-figure-container {
+  display: flex;
+  position: inherit;
 
-  margin: 5px 5px;
-
+  width: moz-fit-content;
   width: fit-content;
+  
+  height: moz-fit-content;
+  height: fit-content;
+  
+  margin: 10px auto;
+  
+  background-color: var(--figure-frame-background);
+  box-shadow: 0 0 5px 1px var(--shadow);
+  
+  border-radius: 5px;
+}
+
+.m-figure {
+  margin: 1px;
+
+  width: moz-fit-content;
+  width: fit-content;
+
+  height: moz-fit-content;
   height: fit-content;
 
-  background-color: var(--figure-frame-background);
   box-shadow: 0 0 5px 1px var(--shadow);
 
   border-radius: 5px;
+
+  transition: 0.2s;
+}
+
+.m-figure:hover {
+  box-shadow: 0 0 5px 1px var(--colored-shadow);
 }

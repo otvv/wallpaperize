@@ -12,8 +12,7 @@ class MButton extends MMalua {
     // create shadow root
     const shadow = this.attachShadow({ mode: "open" });
     shadow.innerHTML = `
-          <link rel="stylesheet" href="lib/malua/malua.css">
-          <link rel="stylesheet" href="lib/malua/widgets/button/button.css">
+          ${globalMaluaStyleInclude}
           <button class="m-button" type="button">
         `;
 
@@ -50,7 +49,7 @@ class MButton extends MMalua {
 
     // set button size
     const elementSize = [
-      this.getAttribute("width") || "fit-content",
+      this.getAttribute("width") || "moz-fit-content" || "fit-content",
       this.getAttribute("height"),
     ];
     this.setSize(buttonElement, elementSize);

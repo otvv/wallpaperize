@@ -3,28 +3,12 @@
 
 "use strict";
 
-class MPanel extends HTMLElement {
-  // @brief: this function will check if a certain attribute exists
-  // in the widget context and if it exists, it will set that attribute accordingly
-  //
-  // @arguments: `element` = element to set the attribute
-  //             `attributeName` = attribute to check if it exists, in case it does, apply its value
-  //             (the value that will be aplied to the attribute is the same that the user provided when "declaring"
-  //              the element in the html root page.)
-  setAttributeWhenPresent = (element, attributeName) => {
-    const attributeValue = this.getAttribute(attributeName);
-
-    // only set attribute if the user has set a value to it
-    if (attributeValue) {
-      element.setAttribute(attributeName, attributeValue);
-    }
-  };
-
+class MPanel extends MMalua {
   // @brief: disables the ability to right click inside the panel
   //
   // @arguments: `element` = main panel element
-  // `headerElement` = header element wrapper
-  // (in case the user wants to disable right click on it)
+  //             `headerElement` = header element wrapper
+  //             (in case the user wants to disable right click on it)
   disableRightClick = (element, headerElement = null) => {
     element.addEventListener("contextmenu", (event) => event.preventDefault());
     headerElement.addEventListener("contextmenu", (event) =>
@@ -32,28 +16,47 @@ class MPanel extends HTMLElement {
     );
   };
 
-  //
   // @brief: handles panel dragging (movement)
   //
   // @arguments: `element` = main panel element (what will be dragged alongside the 'draggable-area')
-  // `headerElement` = headerElement ('area-to-drag')
-  handleMovement = (element, headerElement) => {
+  //             `headerElement` = header element ('area-to-drag')
+  //             `static` = this can be enabled to make the panel static (non-draggable)
+  handleMovement = (element, headerElement, isStatic) => {
+    if (isStatic === true) {
+      return;
+    }
+
     // 'static' mutable variables
+    let animFrameId = 0;
     let isMouseDown = false;
     let isMouseInside = false;
     let mouseX = 0;
     let mouseY = 0;
-    let elementX = 0;
-    let elementY = 0;
-    // TODO: ^^^ clean this up
+    let elementRect = element.getBoundingClientRect();
 
-    // set mouse status accordingly
-    // (if it's inside the headerElement area or not)
+    // @brief: updates panel animation frame whenever this function is called
+    //
+    // @note: this is used to make the dragging "animation" more smooth and responsible
+    const animateFrame = () => {
+      // animate panel 
+      animFrameId = window.requestAnimationFrame(() => {});
+
+      // update panel dimensions every frame
+      elementRect = element.getBoundingClientRect();
+    };
+
+    // @brief: mouse enter/leave 'lambda' event
+    //
+    // @note: (these events will only be triggered if it's inside 
+    // the headerElement area)
     headerElement.addEventListener("mouseenter", () => {
       isMouseInside = true;
     });
     headerElement.addEventListener("mouseleave", () => {
       isMouseInside = false;
+
+      // stop updating panel frame
+      window.cancelAnimationFrame(animFrameId);
     });
 
     // @brief: mouse click down 'lambda' event
@@ -65,8 +68,14 @@ class MPanel extends HTMLElement {
       mouseX = event.clientX;
       mouseY = event.clientY;
 
+      // update panel dimentions
+      elementRect = element.getBoundingClientRect();
+
       // set click state
       isMouseDown = true;
+
+      // update panel anim frame 
+      animateFrame();
     });
 
     // @brief: mouse movement 'lambda' event
@@ -75,17 +84,17 @@ class MPanel extends HTMLElement {
     // (this in theory could be further optimized to only 'listen'
     // for movement when inside the panel)
     document.addEventListener("mousemove", (event) => {
-      if (!isMouseDown || !isMouseInside) {
+      if (isMouseDown === false || isMouseInside === false) {
         return;
       }
 
       // calcualte panel delta position
-      let posDeltaX = +event.clientX - +mouseX;
-      let posDeltaY = +event.clientY - +mouseY;
+      const posDeltaX = (+event.clientX - +mouseX);
+      const posDeltaY = (+event.clientY - +mouseY);
 
       // move panel element
-      element.style.left = +elementX + +posDeltaX + "px";
-      element.style.top = +elementY + +posDeltaY + "px";
+      element.style.left = `${+elementRect.left + +posDeltaX}px`;
+      element.style.top = `${+elementRect.top + +posDeltaY}px`;
     });
 
     // @brief: mouse click up 'lambda' event
@@ -93,12 +102,11 @@ class MPanel extends HTMLElement {
     // @note: this will listen in the entire document because we
     // just want to check if the user has let go of the mouse left button
     document.addEventListener("mouseup", () => {
-      // reset click and mouse states
+      // reset states
       isMouseDown = false;
-      isMouseInside = false;
-
-      elementX = +element.style.left;
-      elementY = +element.style.top;
+      
+      // stop updating panel frame
+      window.cancelAnimationFrame(animFrameId);
     });
   };
 
@@ -110,13 +118,11 @@ class MPanel extends HTMLElement {
     // create shadow root
     const shadow = this.attachShadow({ mode: "open" });
     shadow.innerHTML = `
-          <link rel="stylesheet" href="lib/malua/malua.css">
-          <link rel="stylesheet" href="lib/malua/widgets/panel/panel.css">
-          <link rel="stylesheet" href="lib/malua/widgets/figure/figure.css">
+          ${globalMaluaStyleInclude}
           <main class="m-panel">
           <header class="m-panel-header">
           <span class='m-panel-header-image-container'>
-          <img class='m-figure'></img>
+          <img alt="figure" class='m-figure'></img>
           <a class="m-panel-header-label"></a>
           </span>
           </header>
@@ -143,8 +149,9 @@ class MPanel extends HTMLElement {
 
     // list of attributes to look for
     const attributesToSet = [
-      "title",
+      "label",
       "id",
+      "alt",
       "shader",
       "effect",
       "x",
@@ -153,6 +160,7 @@ class MPanel extends HTMLElement {
       "left",
       "width",
       "height",
+      "static",
     ];
 
     // set attributes if present
@@ -160,48 +168,72 @@ class MPanel extends HTMLElement {
       this.setAttributeWhenPresent(panelElement, attribute);
     });
 
-    // set panel title
-    panelLabelElement.textContent = this.getAttribute("label");
-
     // set panel size
-    panelElement.style.width = this.getAttribute("width") || "fit-content";
-    panelElement.style.height = this.getAttribute("height");
+    const elementSize = [
+      this.getAttribute("width") || "moz-fit-content" || "fit-content",
+      this.getAttribute("height"),
+    ];
+    this.setSize(panelElement, elementSize);
 
-    // NOTE: these are fixed values because of artistic reasons,
-    // feel free to change these when creating another design
+    // set panel label (greeting text)
+    const elementLabel = this.getAttribute("label");
+    this.setLabel(panelLabelElement, elementLabel);
+
+    //
+    // NOTE: these are fixed values because of "artistic" reasons,
+    // feel free to change these if you're modifying malua's default design
+    //
     {
       // set panel image size
-      panelImageElement.style.width = "45px";
-      panelImageElement.style.height = "45px";
+      const panelImageSize = [
+        "45", // width
+        "45", // height
+      ];
+      this.setSize(panelImageElement, panelImageSize);
 
       // set panel image radius
-      panelImageElement.style.borderRadius = "50%";
+      panelImageElement.style.borderRadius = "50px";
+
+      // disable dragging from panel image
+      panelImageElement.setAttribute("draggable", "false");
 
       // set panel widget area initial position
-      panelWidgetArea.style.top = "60px";
+      const panelWidgetAreaTopPosition = "60";
+      this.setTopPosition(panelWidgetArea, panelWidgetAreaTopPosition);
       panelWidgetArea.style.position = "absolute";
     }
 
-    // set panel image source and alt text
-    panelImageElement.src = this.getAttribute("src");
-    panelImageElement.alt = this.getAttribute("alt");
-
     // set panel header and widget area size
-    panelHeaderElement.style.width =
-      this.getAttribute("width") || "fit-content";
+    const panelHeaderWidth = this.getAttribute("width") || "moz-fit-content" || "fit-content";
+    this.setWidth(panelHeaderElement, panelHeaderWidth);
 
-    // set panel pos
-    panelElement.style.left =
-      this.getAttribute("x") || this.getAttribute("left");
-    panelElement.style.top = this.getAttribute("y") || this.getAttribute("top");
+    // set panel abs pos
+    const elementPosition = [
+      this.getAttribute("x") || this.getAttribute("left"),
+      this.getAttribute("y") || this.getAttribute("top"),
+    ];
+    this.setPosition(panelElement, elementPosition);
 
     // set panel shader
-    panelElement.classList.add(
-      this.getAttribute("shader") || this.getAttribute("effect")
-    );
+    const elementShader =
+      this.getAttribute("shader") || this.getAttribute("effect");
+    this.setShader(panelElement, elementShader);
+
+    // set panel image source and alt text
+    if (this.hasAttribute("src")) {
+      panelImageElement.src = this.getAttribute("src");
+
+      this.setPlaceholder(panelImageElement, this.getAttribute("alt"));
+    } else {
+      panelImageElement.style.display = "none";
+    }
 
     // handle panel movement
-    this.handleMovement(panelElement, panelHeaderElement);
+    if (this.hasAttribute("static")) {
+      this.handleMovement(panelElement, panelHeaderElement, true);
+    } else {
+      this.handleMovement(panelElement, panelHeaderElement, false);
+    }
 
     // disable right clicking
     this.disableRightClick(panelElement, panelHeaderElement);

@@ -1,0 +1,78 @@
+/*
+*/
+
+/*
+    combobox widget geometry
+*/
+.m-combobox-box {
+  display: flex;
+  justify-content: center;
+  
+
+  display: flex;
+  align-items: center;
+
+  width: 85%;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.m-combobox {
+  overflow-y: auto;
+  
+  width: 100%;
+  height: 25px;
+
+  text-align: start;
+  -ms-text-align-last: center;
+  text-align-last: center;
+  
+  color: var(--text-color-normal);
+
+  border: 1px solid var(--combobox-border);
+  background-color: var(--combobox-background);
+  border-radius: 5px;
+
+  box-shadow: 0 0 5px 1px var(--shadow);
+
+  transition: 0.1s;
+}
+
+.m-combobox:hover {
+  cursor: pointer;
+}
+
+.m-combobox:active {
+  box-shadow: inset 0 0 5px 1px var(--colored-shadow);
+  border: 1px solid var(--combobox-border-active);
+}
+
+/*
+    combobox item label geometry
+*/
+.m-combobox option {
+  background-color: var(--combobox-option-hover);
+}
+
+.m-combobox option:hover {
+  color: var(--text-color-accent-alt);
+}
+
+.m-combobox option:checked,
+.m-combobox option:focus,
+.m-combobox option:active {
+  background-color: var(--combobox-option-checked) !important;
+}
+
+/*
+    combobox label
+*/
+.m-combobox-label-container {
+  display: flex;
+}
+
+.m-combobox-label {
+  margin: 2px auto;
+  color: var(--text-color-normal);
+}

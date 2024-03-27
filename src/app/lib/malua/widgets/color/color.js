@@ -4,6 +4,17 @@
 "use strict";
 
 class MColor extends MMalua {
+  // @brief: perform initial operations when mounting element
+  connectedCallback() {
+    const colorElement = this.shadowRoot.querySelector(".m-color-button");
+
+    // set color button default color
+    this.setValue(
+      colorElement,
+      this.getAttribute("color") || this.getAttribute("value") || "#ffffff"
+    );
+  }
+
   // @brief: widget constructor (don't touch this unless you know what you're doing!)
   constructor() {
     // ...
@@ -12,17 +23,16 @@ class MColor extends MMalua {
     // create shadow root
     const shadow = this.attachShadow({ mode: "open" });
     shadow.innerHTML = `
-          <link rel="stylesheet" href="lib/malua/malua.css">
-          <link rel="stylesheet" href="lib/malua/widgets/color/color.css">
-          <div class="m-color-button-box">
+          ${globalMaluaStyleInclude}
+          <span class="m-color-button-box">
           <input class="m-color-button" type="color">
           <label class="m-color-button-label"></label>
-          </div>
+          </span>
         `;
 
     // color button wrapper and box div
     const colorButtonElement = shadow.querySelector("input");
-    const boxDivElement = shadow.querySelector("div");
+    const boxSpanElement = shadow.querySelector("div");
 
     // color input title
     const colorButtonLabelElement = shadow.querySelector("label");
@@ -52,29 +62,25 @@ class MColor extends MMalua {
     // set colorpicker label
     const elementLabel = this.getAttribute("label");
     this.setLabel(colorButtonLabelElement, elementLabel, true);
+    colorButtonElement.title = elementLabel;
 
-    // set default color
-    const elementValue =
-      this.getAttribute("color") || this.getAttribute("value");
-    this.setValue(colorButtonElement, elementValue);
+    // set colorpicker placeholder
+    const elementPlaceholder = this.getAttribute("placeholder");
+    this.setPlaceholder(colorButtonElement, elementPlaceholder);
 
     // set colorpicker div box abs pos
     const elementPosition = [
       this.getAttribute("x") || this.getAttribute("left"),
       this.getAttribute("y") || this.getAttribute("top"),
     ];
-    this.setPosition(boxDivElement, elementPosition);
+    this.setPosition(boxSpanElement, elementPosition);
 
     // set colorpicker box div size
     const elementSize = [
-      this.getAttribute("width") || "fit-content",
+      this.getAttribute("width") || "moz-fit-content" || "fit-content",
       this.getAttribute("height"),
     ];
-    this.setSize(boxDivElement, elementSize);
-
-    // set slider placeholder
-    const elementPlaceholder = this.getAttribute("placeholder");
-    this.setPlaceholder(colorButtonElement, elementPlaceholder);
+    this.setSize(boxSpanElement, elementSize);
 
     // set colorpicker id and string attribution
     if (this.hasAttribute("id")) {

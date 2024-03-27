@@ -3,23 +3,7 @@
 
 "use strict";
 
-class MModal extends HTMLElement {
-  // @brief: this function will check if a certain attribute exists
-  // in the widget context and if it exists, it will set that attribute accordingly
-  //
-  // @arguments: `element` = element to set the attribute
-  //             `attributeName` = attribute to check if it exists, in case it does, apply its value
-  //             (the value that will be aplied to the attribute is the same that the user provided when "declaring"
-  //              the element in the html root page.)
-  setAttributeWhenPresent = (element, attributeName) => {
-    const attributeValue = this.getAttribute(attributeName);
-
-    // only set attribute if the user has set a value to it
-    if (attributeValue) {
-      element.setAttribute(attributeName, attributeValue);
-    }
-  };
-
+class MModal extends MMalua {
   // @brief: disables the ability to right click inside the modal
   //
   // @arguments: `element` = main modal element
@@ -63,9 +47,7 @@ class MModal extends HTMLElement {
     // create shadow root
     const shadow = this.attachShadow({ mode: "open" });
     shadow.innerHTML = `
-    <link rel="stylesheet" href="lib/malua/malua.css">
-    <link rel="stylesheet" href="lib/malua/widgets/modal/modal.css">
-    <link rel="stylesheet" href="lib/malua/widgets/button/button.css">
+    ${globalMaluaStyleInclude}
     <button class="m-button" style="position: inherit;"></button>
     <section class="m-modal-background" style="display: none;">
       <div class="m-modal-box">
@@ -96,7 +78,10 @@ class MModal extends HTMLElement {
       "label",
       "placeholder",
       "shader",
-      "type",
+      "x",
+      "y",
+      "top",
+      "left",
       "width",
       "height",
     ];
@@ -107,28 +92,31 @@ class MModal extends HTMLElement {
     });
 
     // set modal size
-    modalElement.style.width = this.getAttribute("width");
-    modalElement.style.height = this.getAttribute("height");
+    const elementSize = [
+      this.getAttribute("width"),
+      this.getAttribute("height"),
+    ];
+    this.setSize(modalElement, elementSize);
 
-    // set "open modal" button placeholder text and absolute position
-    modalOpenButtonElement.textContent =
-      this.getAttribute("placeholder") || this.getAttribute("label");
+    // set the title of the modal 'trigger' button modal and abs position
+    const elementLabel = this.getAttribute("label");
+    this.setLabel(modalOpenButtonElement, elementLabel);
     modalOpenButtonElement.style.position = "absolute";
 
+    // set modal shader
+    const elementShader =
+      this.getAttribute("shader") || this.getAttribute("effect");
+    this.setShader(modalElement, elementShader);
+
+    // get rid of the "black" background if the modal has a shader
     if (this.hasAttribute("shader") || this.hasAttribute("effect")) {
-      // set modal dialog shader
-      modalElement.classList.add(
-        this.getAttribute("shader") || this.getAttribute("effect")
-      );
-
-      // get rid of the "black" background if the modal has a shader
       modalBackgroundElement.style.background = "none";
-
-      // set background shader
-      modalBackgroundElement.classList.add(
-        this.getAttribute("shader") || this.getAttribute("effect")
-      );
     }
+
+    // set modal background shader
+    const backgroundShader =
+      this.getAttribute("shader") || this.getAttribute("effect");
+    this.setShader(modalBackgroundElement, backgroundShader);
 
     const modalElementsGroup = [
       modalBackgroundElement,

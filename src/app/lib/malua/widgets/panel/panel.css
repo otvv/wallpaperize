@@ -5,7 +5,9 @@
     panel header geometry
 */
 .m-panel-header {
+  width: moz-fit-content;
   width: fit-content;
+
   height: 55px;
 
   background-color: var(--header-background);
@@ -13,11 +15,6 @@
 
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-
-  /* DEBUG PURPOSES ONLY */
-  /* border: 2px dashed rgb(255, 0, 179); */
-
-  z-index: -1;
 }
 
 /* 
@@ -33,7 +30,9 @@
 
   background: transparent;
 
+  width: moz-fit-content;
   width: fit-content;
+
   height: 45px;
 }
 
@@ -60,13 +59,11 @@
   box-shadow: 0 0 5px 1px var(--shadow);
 
   border-radius: 8px;
-
-  z-index: -1;
 }
 
 .m-panel-widget-area {
   display: flex;
-  position: absolute;
+  position: inherit;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -76,10 +73,11 @@
   overflow-x: auto;
   overflow-y: auto;
 
+  width: moz-fit-content;
   width: fit-content;
-  height: fit-content;
 
-  z-index: -1;
+  height: moz-fit-content;
+  height: fit-content;
 }
 
 /*

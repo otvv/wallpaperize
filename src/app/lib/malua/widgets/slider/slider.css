@@ -4,13 +4,14 @@
 /*
     slider widget geometry
 */
+
 .m-slider-box {
   display: flex;
 
   justify-content: center;
   align-items: center;
 
-  width: 85.5%;
+  width: 85%;
   height: 25px;
 
   margin: 5px auto;
@@ -22,7 +23,7 @@
 }
 
 .m-slider {
-  width: 96%;
+  width: 100%;
   height: 5px;
 
   margin-left: 10px;
@@ -31,65 +32,73 @@
   box-shadow: 0 0 5px 0 var(--shadow);
 
   border-radius: 4px;
+
+  transition: 0.1s;
+}
+
+.m-slider:active {
+  box-shadow: 0 0 5px 1px var(--colored-shadow);
 }
 
 .m-slider::-ms-thumb {
   width: 14px;
   height: 14px;
-
+  
   border: 1px solid var(--slider-thumb-border);
   background: var(--slider-thumb-background);
-
+  
   border-radius: 50%;
-
-  appearance: none;
 }
 
 .m-slider::-moz-range-thumb {
   width: 14px;
   height: 14px;
-
+  
   border: 1px solid var(--slider-thumb-border);
   background: var(--slider-thumb-background);
-
+  
   border-radius: 50%;
 
-  -moz-appearance: none;
+  appearance: none;
 }
 
 .m-slider::-webkit-slider-thumb {
   width: 14px;
   height: 14px;
-
+  
   border: 1px solid var(--slider-thumb-border);
   background: var(--slider-thumb-background);
-
+  
   border-radius: 50%;
 
-  -webkit-appearance: none;
+  appearance: none;
 }
+
 
 /*
     slider label and output text
 */
+.m-slider-label-ontainer {
+  display: flex;
+}
+
 .m-slider-label {
   font-size: 14px;
-  margin-left: 20px;
-
   color: var(--text-color-normal);
 }
 
 .m-slider-output-text {
-  font-size: 10px;
+  font-size: 11px;
+
+  width: 20px;
+  
+  -ms-text-align-last: center;
+  -moz-text-align-last: center;
 
   text-align: center;
   text-align-last: center;
 
-  -ms-text-align-last: center;
-  -moz-text-align-last: center;
-
-  margin-left: 5px;
-  margin-right: 5px;
+  padding: 5px;
 
   color: var(--text-color-normal);
 }

@@ -34,6 +34,9 @@
   border-radius: 4px;
 }
 
+/*
+    checkbox label
+*/
 .m-checkbox-label {
   padding-left: 7px;
   color: var(--text-color-normal);

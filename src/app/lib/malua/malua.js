@@ -3,15 +3,18 @@
 
 "use strict";
 
+// global malua styles import 
+const globalMaluaStyleInclude = "<link rel='stylesheet' href='lib/malua/malua.css'/>"
+
 class MMalua extends HTMLElement {
   // @brief: function to set the absolute position of a HTML element
   //
   // @arguments: `element` = element to set the position
-  //             `top` = top position (Y in pixels)
   //             `left` = left position (X in pixels)
+  //             `top` = top position (Y in pixels)
   //
-  // @overloads: `position` = a 2d array containing the position (left and right in pixels)
-  setPosition(element, top, left) {
+  // @overloads: `position` = a 2d array containing the position (left and top in pixels)
+  setPosition(element, left, top) {
     if (element === null) {
       return;
     }
@@ -30,6 +33,88 @@ class MMalua extends HTMLElement {
     }
   }
 
+  // @brief: function to set the marging of a HTML element
+  //
+  // @arguments: `element` = element to set the position
+  //             `leftMargin` = left margin (in pixels)
+  //             `topMargin` = top margin (in pixels)
+  //
+  // @overloads: `margin` = a 2d array containing the margin (left and top in pixels)
+  setMargin(element, leftMargin, topMargin) {
+    if (element === null) {
+      return;
+    }
+
+    element.style.marginLeft = `${leftMargin}px`;
+    element.style.marginTop = `${topMargin}px`;
+  }
+  setMargin(element, margin) {
+    if (element === null) {
+      return;
+    }
+
+    if (margin) {
+      element.style.marginLeft = `${margin[0]}px`;
+      element.style.marginTop = `${margin[1]}px`;
+    }
+  }
+
+  // @brief: function to set the absolute left position of a HTML element
+  //
+  // @arguments: `element` = element to set the position
+  //             `left` = left position (X in pixels)
+  setLeftPosition(element, left) {
+    if (element === null) {
+      return;
+    }
+
+    if (left) {
+      element.style.left = `${left}px`;
+    }
+  }
+
+  // @brief: function to set the left margin of a HTML element
+  //
+  // @arguments: `element` = element to set the position
+  //             `leftMargin` = left margin (in pixels)
+  setLeftMargin(element, leftMargin) {
+    if (element === null) {
+      return;
+    }
+
+    if (leftMargin) {
+      element.style.marginLeft = `${leftMargin}px`;
+    }
+  }
+
+  // @brief: function to set the absolute top position of a HTML element
+  //
+  // @arguments: `element` = element to set the position
+  //             `top` = top position (Y in pixels)
+  setTopPosition(element, top) {
+    if (element === null) {
+      return;
+    }
+
+    if (top) {
+      element.style.top = `${top}px`;
+    }
+  }
+
+  // @brief: function to set the top margin of a HTML element
+  //
+  // @arguments: `element` = element to set the position
+  //             `topMargin` = top margin (in pixels)
+  setTopMargin(element, topMargin) {
+    if (element === null) {
+      return;
+    }
+
+    if (topMargin) {
+      element.style.marginTop = `${topMargin}px`;
+    }
+  }
+
   // @brief: function to set the size of a HTML element
   //
   // @arguments: `element` = element to set the size
@@ -37,13 +122,20 @@ class MMalua extends HTMLElement {
   //             `height` = element height (in pixels)
   //
   // @overloads: `size` = a 2d array containing the size (width and height in pixels)
+  //             `width` = only width will be set
+  //             `height` = only height will be set
   setSize(element, width, height) {
     if (element === null) {
       return;
     }
-
-    element.style.width = `${width}px`;
-    element.style.height = `${height}px`;
+    // img size alternative
+    if (element.nodeName === "img") {
+      element.width = `${width}px`;
+      element.height = `${height}px`;
+    } else {
+      element.style.width = `${width}px`;
+      element.style.height = `${height}px`;
+    }
   }
   setSize(element, size) {
     if (element === null) {
@@ -51,8 +143,44 @@ class MMalua extends HTMLElement {
     }
 
     if (size) {
-      element.style.width = `${size[0]}px`;
-      element.style.height = `${size[1]}px`;
+      // img size alternative
+      if (element.nodeName === "img") {
+        element.width = `${size[0]}px`;
+        element.height = `${size[1]}px`;
+      } else {
+        element.style.width = `${size[0]}px`;
+        element.style.height = `${size[1]}px`;
+      }
+    }
+  }
+
+  // @brief: function to set the width of a HTML element
+  //
+  // @arguments: `element` = element to set the size
+  //             `width` = element width (in pixels)
+  //
+  setWidth(element, width) {
+    if (element === null) {
+      return;
+    }
+
+    if (width) {
+      element.style.width = `${width}px`;
+    }
+  }
+
+  // @brief: function to set the height of a HTML element
+  //
+  // @arguments: `element` = element to set the size
+  //             `height` = element height (in pixels)
+  //
+  setHeight(element, height) {
+    if (element === null) {
+      return;
+    }
+
+    if (height) {
+      element.style.height = `${height}px`;
     }
   }
 
@@ -62,51 +190,81 @@ class MMalua extends HTMLElement {
   //             `title` = title/text label (string)
   //             `skipPlaceHolder` = tell the framework to skip naming the placeholder
   //              (some widgets my need a different placeholder text)
-  setLabel(element, title = null, skipPlaceholder = false) {
+  setLabel(element, title, skipPlaceholder = false) {
     if (element === null) {
       return;
     }
 
-    if (title) {
+    if (title !== null) {
       if (skipPlaceholder === false) {
-        element.placeholder = title;
+        if (element.placeholder !== null) {
+          element.placeholder = title;
+        }
       }
-      element.textContent = title;
+
+      if (element.textContent !== null) {
+        element.textContent = title;
+      }
+
+      if (element.title !== null) {
+        element.title = title;
+      }
     }
   }
 
   // @brief: function to set the placeholder text of a HTML element
   //
-  // @arguments: `element` = element to set the title
+  // @arguments: `element` = element to set the placeholder
   //             `placeholder` = placeholder text label (string)
   setPlaceholder(element, placeholder = null) {
     if (element === null) {
       return;
     }
 
-    if (placeholder) {
+    if (placeholder !== null) {
       element.placeholder = placeholder;
+
+      if (element.alt !== null) {
+        element.alt = placeholder;
+      }
     }
   }
 
   // @brief: function to set a specific value of a HTML element
   //
-  // @arguments: `element` = element to set the title
+  // @arguments: `element` = element to set the value
   //             `value` = element value (any)
   setValue(element, value = null) {
     if (element === null) {
       return;
     }
 
-    if (value) {
+    if (value !== null) {
       element.value = value;
+    }
+  }
+
+  // @brief: function to set a specific index of a HTML element
+  // (useful for ListBoxes and ComboBoxes)
+  //
+  // @arguments: `element` = element to set the index
+  //             `index` = element index (number)
+  setIndex(element, index = 0) {
+    if (element === null) {
+      return;
+    }
+
+    if (index !== 0) {
+      if (element.selectedIndex !== null) {
+        element.selectedIndex = index;
+      }
     }
   }
 
   // @brief: function to set the state of a HTML element
   // (checked, opened, etc)
   //
-  // @arguments: `element` = element to set the title
+  // @arguments: `element` = element to set the state
   //             `state` = element state (string)
   setState(element, state = "false") {
     if (element === null) {
@@ -127,19 +285,32 @@ class MMalua extends HTMLElement {
   //
   // @arguments: `element` = element to set the shader
   //             `shader` = shader param name (blur, glass, etc)
+  //             `skipLabel` = this will tell the function to skip label related elements from having blur applied
+  //              defaults to true
   //             `additional` = additional classes (in case the widget has any/needs one)
   //              defaults to null
-  setShader(element, shader, additional = null) {
-    if (element === null) {
+  setShader(element, shader, skipLabel = true, additional = null) {
+    if (!(element instanceof Element)) {
       return;
     }
-
+  
     if (shader) {
-      if (additional) {
-        element.classList.add(shader,additional);
-      } else {
-        element.classList.add(shader);
-      }
+      const elementsToApplyShader = !skipLabel
+        ? Array.from(element.children).filter(
+            (child) =>
+              child.tagName &&
+              (child.tagName.toLowerCase() === "label" ||
+                child.tagName.toLowerCase() === "legend")
+          )
+        : [element];
+  
+      elementsToApplyShader.forEach((element) => {
+        if (additional !== null) {
+          element.classList.add(shader, additional);
+        } else {
+          element.classList.add(shader);
+        }
+      });
     }
   }
 
@@ -153,7 +324,7 @@ class MMalua extends HTMLElement {
       return;
     }
 
-    if (hrefLink) {
+    if (hrefLink !== null) {
       element.onclick = () => {
         window.location.href = hrefLink;
       };
@@ -174,7 +345,7 @@ class MMalua extends HTMLElement {
 
     const attributeValue = element.getAttribute(attributeName);
 
-    if (attributeValue) {
+    if (attributeValue !== null) {
       element.setAttribute(attributeName, attributeValue);
     }
   };
