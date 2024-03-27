@@ -84,17 +84,17 @@ class MSlider extends MMalua {
     ];
     this.setPosition(sliderElement, elementPosition);
 
-    // set slider label aligment
-    const minusOffset = 7; // px (feel free to change)
-    const elementLabelPosition = (boxSpanElement.getBoundingClientRect().left - +minusOffset); // this fixes the wrong label alignemnt
-    this.setLeftMargin(sliderLabelElement, elementLabelPosition);
+    // set slider label aligment (hardcoded for now until I find a more permanent fix)
+    const minusOffset = 47; // px (feel free to change)
+    this.setLeftMargin(sliderLabelElement, minusOffset);
 
-    // set slider box div size
+    // set slider box span and slider size
     const elementSize = [
       this.getAttribute("width") || "moz-fit-content" || "fit-content",
       this.getAttribute("height"),
     ];
     this.setSize(sliderElement, elementSize);
+    this.setSize(boxSpanElement, elementSize);
 
     // set slider min max values (clamping)
     const elementClamp = [

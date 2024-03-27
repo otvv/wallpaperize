@@ -7,6 +7,7 @@ const fileInput = document.querySelector("#fileInput");
 const fileLabel = document.querySelector("#fileLabel");
 const checkboxes = document.querySelectorAll("m-checkbox");
 const textboxes = document.querySelectorAll("m-textbox");
+const sliders = document.querySelectorAll("m-slider");
 
 const drawHighlightImage = (
   ctx,
@@ -136,8 +137,8 @@ const generateImage = () => {
     const scaleFactorY = canvas.height / bgimg.height;
     const scaleFactor = Math.max(scaleFactorX, scaleFactorY);
     
-    // zoonFactor (in pixels) (this is used to avoid a weird white border/blured edge 
-    // in the blurred background of the wallpaper)
+    // zoonFactor (in pixels) (this is used to avoid a weird blurred white/blue border in the 
+    // background of the wallpaper/canvas)
     const zoomFactor = 100;
     
     // calculate the new dimensions to fill the canvas
@@ -182,8 +183,8 @@ const generateImage = () => {
       }
 
       // calculate middle of the screen (canvas)
-      const middleX = canvas.width / 2 - highlightImageWidth / 2;
-      const middleY = canvas.height / 2 - highlightImageHeight / 2;
+      const middleX = (canvas.width / 2) - (highlightImageWidth / 2);
+      const middleY = (canvas.height / 2) - (highlightImageHeight / 2);
 
       // handle options
       const roundedCheckboxElement =
@@ -194,8 +195,16 @@ const generateImage = () => {
       if (!roundedCheckboxElement || !shadowCheckboxElement) {
         return;
       }
+      
+      // TODO: allow the user to customize this value
+      const sliderRadiusElement = sliders[0].shadowRoot.querySelector("#slider-radius");
 
-      const highlightImageRadius = 10;
+      if (!sliderRadiusElement) {
+        return;
+      }
+      
+      // custom image radius
+      const highlightImageRadius = sliderRadiusElement.value;
 
       // draw highglight image at the middle of the canvas
       drawHighlightImage(

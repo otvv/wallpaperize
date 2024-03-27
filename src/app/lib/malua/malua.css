@@ -121,6 +121,7 @@ hr {
   --groupbox-border: #41414199;
 
   /* slider widget colors */
+  --slider-text-color: #e0e0e0;
   --slider-box-background: #ffffff85;
   --slider-background: #ffffff9c;
   --slider-thumb-background: #ffffffce;

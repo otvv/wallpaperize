@@ -16,6 +16,7 @@
   <script src="lib/malua/widgets/checkbox/checkbox.js" defer></script>
   <script src="lib/malua/widgets/groupbox/groupbox.js" defer></script>
   <script src="lib/malua/widgets/textbox/textbox.js" defer></script>
+  <script src="lib/malua/widgets/slider/slider.js" defer></script>
 </head>
 
 <body>
@@ -27,28 +28,36 @@
     </span>
   </header>
   <section>
+
     <label id="fileLabel">no image loaded</label>
     <input class="input-file" placeholder="Choose image file to upload" title="load image" id="fileInput"
       type="file" accept="image/*" />
-    <m-button shader="blur" label="load image" width="290"
+    <m-button shader="glass" label="load image" width="290"
       onclick="document.getElementById('fileInput').click();"></m-button>
 
-    <m-groupbox shader="blur" label="custom settings" width="300" height="250">
+    <m-groupbox shader="glass" label="custom settings" width="350" height="313">
       <m-textbox id="textbox-width" placeholder="width: 1920" width="250"></m-textbox>
       <m-textbox id="textbox-height" placeholder="height: 1080" width="250"></m-textbox>
-
+      
       <m-checkbox id="checkbox-rounded" width="255" label="add rounded corner"
-        placeholder="make the highlighted image (center image) border rounded" checked="true"></m-checkbox>
-
+      placeholder="make the highlighted image (center image) border rounded" checked="true"></m-checkbox>
+      
       <m-checkbox id="checkbox-shadow" width="255" label="add drop shadow"
-        placeholder="adds a subtle shadow in the highlighted image (center image)" checked="true""></m-checkbox>
-        
-        <m-checkbox id="checkbox-mantain-size" width="255" label="keep original size"
-        placeholder="keeps the highlighted image aspect ration and original size" checked="false""></m-checkbox>
-        
-        <m-button shader="blur" label="wallpaperize!" width="248" height="23" onclick="generateImage()"></m-button>
+      placeholder="adds a subtle shadow in the highlighted image (center image)" checked="true""></m-checkbox>
+
+      <m-slider id="slider-radius" width="255" label="set border radius"
+      placeholder="sets the radius of the highlighted image (the image that will be displayed in the middle)" sufix="rad" value="10" min="0" max="175"></m-slider>
+      
+      <m-checkbox id="checkbox-mantain-size" width="255" label="keep original size"
+      placeholder="keeps the highlighted image aspect ration and original size" checked="false""></m-checkbox>
+      
+      <m-button shader="glass" label="wallpaperize!" width="248" height="23" onclick="generateImage()"></m-button>
     </m-groupbox>
 
+    <br>
+    <hr>
+    <br>
+    
     <br>
     <!--TODO: add a little preview of the end result somewhere around here-->
   </section>
