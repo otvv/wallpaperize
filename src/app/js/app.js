@@ -16,11 +16,10 @@ const drawHighlightImage = (
   y,
   width,
   height,
-  radius,
-  rounded,
-  shadow
+  cornerRadius,
+  dropShadow
 ) => {
-  if (rounded) {
+  if (cornerRadius > 0) {
     // create a temporary canvas to draw the rounded image
     const tempCanvas = document.createElement("canvas");
     tempCanvas.width = width;
@@ -28,22 +27,20 @@ const drawHighlightImage = (
     const tempCtx = tempCanvas.getContext("2d");
 
     tempCtx.beginPath();
-    tempCtx.moveTo(radius, 0);
-    tempCtx.arcTo(width, 0, width, height, radius);
-    tempCtx.arcTo(width, height, 0, height, radius);
-    tempCtx.arcTo(0, height, 0, 0, radius);
-    tempCtx.arcTo(0, 0, width, 0, radius);
+    tempCtx.moveTo(cornerRadius, 0);
+    tempCtx.arcTo(width, 0, width, height, cornerRadius);
+    tempCtx.arcTo(width, height, 0, height, cornerRadius);
+    tempCtx.arcTo(0, height, 0, 0, cornerRadius);
+    tempCtx.arcTo(0, 0, width, 0, cornerRadius);
     tempCtx.closePath();
 
     tempCtx.clip();
     tempCtx.drawImage(image, 0, 0, width, height);
 
     // apply shadow to the entire temporary canvas
-    if (shadow) {
-      ctx.shadowColor = "rgba(0, 0, 0, 0.50)";
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 5;
-      ctx.shadowBlur = 15;
+    if (dropShadow) {
+      ctx.shadowColor = "rgba(0, 0, 0, 0.70)";
+      ctx.shadowBlur = 10;
     }
 
     // draw the temporary canvas onto the main canvas
@@ -51,16 +48,12 @@ const drawHighlightImage = (
 
     // reset modifications after drawing fgimg
     ctx.shadowColor = "transparent";
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
     ctx.shadowBlur = 0;
   } else {
     // only apply drop shadow without rounded corners
-    if (shadow) {
-      ctx.shadowColor = "rgba(0, 0, 0, 0.50)";
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 5;
-      ctx.shadowBlur = 15;
+    if (dropShadow) {
+      ctx.shadowColor = "rgba(0, 0, 0, 0.70)";
+      ctx.shadowBlur = 10;
     }
 
     // draw the image without clipping
@@ -68,8 +61,6 @@ const drawHighlightImage = (
 
     // reset modifications after drawing fgimg
     ctx.shadowColor = "transparent";
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
     ctx.shadowBlur = 0;
   }
 };
@@ -140,36 +131,44 @@ const generateImage = () => {
     // zoonFactor (in pixels) (this is used to avoid a weird blurred white/blue border in the 
     // background of the wallpaper/canvas)
     const zoomFactor = 100;
+    const extra = 2;
     
     // calculate the new dimensions to fill the canvas
-    const scaledWidth = (bgimg.width * scaleFactor) + zoomFactor;
-    const scaledHeight = (bgimg.height * scaleFactor) + zoomFactor;
+    const scaledWidth = (bgimg.width * scaleFactor) + (zoomFactor * extra);
+    const scaledHeight = (bgimg.height * scaleFactor) + (zoomFactor * extra);
 
     // calculate the position to center the image
     const offsetX = (canvas.width - scaledWidth) / 2;
     const offsetY = (canvas.height - scaledHeight) / 2;
 
+    // handle options
+    const sliderBackgroundBlurElement = sliders[0].shadowRoot.querySelector("#slider-background-blur");
+
+    if (!sliderBackgroundBlurElement) {
+      return;
+    }
+
+    if (sliderBackgroundBlurElement.value > 0) {
+      ctx.filter = `blur(${+sliderBackgroundBlurElement.value}px)`;
+    }
+    
     // draw background image
-    ctx.filter = "blur(35px)";
     ctx.drawImage(bgimg, offsetX, offsetY, scaledWidth, scaledHeight);
     ctx.filter = "none";
 
     // generate highlight image
     fgimg.onload = () => {
-      const mantainSizeCheckboxElement = checkboxes[2].shadowRoot.querySelector(
-        "#checkbox-mantain-size"
-      );
+      const checkboxMantainSizeElement = checkboxes[0].shadowRoot.querySelector("#checkbox-mantain-size");
 
-      if (!mantainSizeCheckboxElement) {
+      if (!checkboxMantainSizeElement) {
         return;
       }
       
-
       let highlightImageWidth = 350;
       let highlightImageHeight = 350;
 
       // resize highlight image accordingly
-      if (mantainSizeCheckboxElement.checked) {
+      if (checkboxMantainSizeElement.checked) {
         highlightImageWidth = +fgimg.width * 0.6;
         highlightImageHeight = +fgimg.height * 0.6;
 
@@ -187,24 +186,23 @@ const generateImage = () => {
       const middleY = (canvas.height / 2) - (highlightImageHeight / 2);
 
       // handle options
-      const roundedCheckboxElement =
-        checkboxes[0].shadowRoot.querySelector("#checkbox-rounded");
-      const shadowCheckboxElement =
+      const checkboxShadowElement =
         checkboxes[1].shadowRoot.querySelector("#checkbox-shadow");
 
-      if (!roundedCheckboxElement || !shadowCheckboxElement) {
+      if (!checkboxShadowElement) {
         return;
       }
       
-      // TODO: allow the user to customize this value
-      const sliderRadiusElement = sliders[0].shadowRoot.querySelector("#slider-radius");
+      const sliderCornerRadiusElement = sliders[1].shadowRoot.querySelector("#slider-corner-radius");
 
-      if (!sliderRadiusElement) {
+      if (!sliderCornerRadiusElement) {
         return;
       }
       
-      // custom image radius
-      const highlightImageRadius = sliderRadiusElement.value;
+      // set custom highlighted image border corner radius
+      // TODO: translate the same value accordingly in case 
+      // the user wants to keep the original image size
+      const highlightImageCornerRadius = sliderCornerRadiusElement.value;
 
       // draw highglight image at the middle of the canvas
       drawHighlightImage(
@@ -214,9 +212,8 @@ const generateImage = () => {
         middleY,
         highlightImageWidth,
         highlightImageHeight,
-        highlightImageRadius,
-        roundedCheckboxElement.checked,
-        shadowCheckboxElement.checked
+        highlightImageCornerRadius,
+        checkboxShadowElement.checked
       );
 
       const base64 = canvas.toDataURL();
@@ -233,13 +230,13 @@ const generateImage = () => {
 fileInput.addEventListener("change", (event) => {
   const currFile = event.target.files;
 
-  if (!currFile) {
+  if (!currFile || !currFile[0].name) {
     return;
   }
 
   const limit = 15;
   let truncatedString = "null";
-  
+
   // clamp file name
   if (currFile[0].name.length >= limit) {
     truncatedString = `${currFile[0].name.substring(0, limit)}...`;

@@ -31,7 +31,8 @@ a {
 }
 
 label {
-  display: block;
+  display: flex;
+
   text-align: center;
 }
 

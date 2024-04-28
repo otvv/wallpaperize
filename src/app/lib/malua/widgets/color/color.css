@@ -16,7 +16,7 @@
   padding-left: 5px;
   padding-bottom: 2px;
 
-  background: var(--color-box-background);
+  background-color: var(--color-box-background);
   box-shadow: 0 0 5px 1px var(--shadow);
 
   border-radius: 5px;
@@ -56,7 +56,7 @@
 }
 
 /*
-    color button label and output (color) text
+    color button label text
 */
 .m-color-button-label {
   padding-left: 7px;

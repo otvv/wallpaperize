@@ -24,6 +24,9 @@
   border: none;
   outline: none;
   box-sizing: unset;
+  text-decoration: none;
+  -moz-text-decoration-style: none;
+  text-decoration-style: none;
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   -o-appearance: none !important;
