@@ -29,7 +29,7 @@ const drawHighlightImage = (
     }
   };
 
-  if (cornerRadius > 10) {
+  if (cornerRadius >= 10) {
     const tempCanvas = document.createElement("canvas");
     tempCanvas.width = width;
     tempCanvas.height = height;
@@ -113,8 +113,8 @@ const generateImage = () => {
   // generate wallpaper background
   bgimg.onload = () => {
     // calculate scaling factors for the background image
-    const scaleFactorX = canvas.width / bgimg.width;
-    const scaleFactorY = canvas.height / bgimg.height;
+    const scaleFactorX = (canvas.width / bgimg.width);
+    const scaleFactorY = (canvas.height / bgimg.height);
     const scaleFactor = Math.max(scaleFactorX, scaleFactorY);
 
     // zoonFactor (in pixels) (this is used to avoid a weird blurred white/blue border in the
@@ -123,8 +123,8 @@ const generateImage = () => {
     const extra = 2;
 
     // calculate the new dimensions to fill the canvas
-    const scaledWidth = bgimg.width * scaleFactor + zoomFactor * extra;
-    const scaledHeight = bgimg.height * scaleFactor + zoomFactor * extra;
+    const scaledWidth = (bgimg.width * scaleFactor) + (zoomFactor * extra);
+    const scaledHeight = (bgimg.height * scaleFactor) + (zoomFactor * extra);
 
     // calculate the position to center the image
     const offsetX = (canvas.width - scaledWidth) / 2;
@@ -160,15 +160,15 @@ const generateImage = () => {
 
       // resize highlight image if the user decides to not use the image's original proportions
       if (checkboxMantainSizeElement.checked) {
-        highlightImageDefaultWidth = +(fgimg.width * 0.6);
-        highlightImageDefaultHeight = +(fgimg.height * 0.6);
+        highlightImageDefaultWidth = fgimg.width * 0.6;
+        highlightImageDefaultHeight = fgimg.height * 0.6;
 
         if (highlightImageDefaultWidth >= +customWidth) {
-          highlightImageDefaultWidth = +(fgimg.width * 0.6);
+          highlightImageDefaultWidth = fgimg.width * 0.6;
         }
 
         if (highlightImageDefaultHeight >= +customHeight) {
-          highlightImageDefaultHeight = +(fgimg.height * 0.6);
+          highlightImageDefaultHeight = fgimg.height * 0.6;
         }
       }
 
