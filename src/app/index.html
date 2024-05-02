@@ -28,48 +28,51 @@
     </span>
   </header>
   <section>
-
     <label id="fileLabel" class="title">no image loaded</label>
     <input class="input-file" placeholder="Choose image file to upload" title="load image" id="fileInput" type="file"
-      accept="image/*" />
+        accept="image/*" />
     <m-button shader="glass" label="load image" width="390"
-      onclick="document.getElementById('fileInput').click();"></m-button>
-    
-    <m-groupbox shader="glass" label="custom settings" width="350" height="345">
-      <m-textbox id="textbox-width" placeholder="width: 1920" width="255"></m-textbox>
-      <m-textbox id="textbox-height" placeholder="height: 1080" width="255"></m-textbox>
-    
-      <m-checkbox id="checkbox-mantain-size" width="255" label="keep original size"
-        placeholder="keeps the highlighted image (center image) aspect ration and original size" checked="false""></m-checkbox>
-      <m-checkbox id="checkbox-shadow" width="255" label="add drop shadow"
-        placeholder="adds a subtle shadow in the highlighted image (center image)" checked="true""></m-checkbox>
-        
-      <m-slider id="slider-background-blur" width="260" label="background blur"
-      placeholder="adjusts the amount of blur for the background image" sufix="%" value="35" min="5" max="50"></m-slider>
-      <m-slider id="slider-corner-radius" width="260" label="corner radius"
-      placeholder="sets the corner radius of the highlighted image (center image)" sufix="rad" value="10" min="0"
-      max="175"></m-slider>
+        onclick="document.getElementById('fileInput').click();"></m-button>
 
-      <!-- <m-checkbox disabled id="checkbox-alternate-style" width="255" label="alternate style"
-      placeholder="generates the wallpaper using an alternate style (will ignore all options above, except for size)" checked="false""></m-checkbox> -->
+    <m-groupbox shader="glass" label="custom settings" width="350" height="345">
+      <m-textbox id="textbox-width" placeholder="width" value="1920" width="255"></m-textbox>  
+      <m-textbox id="textbox-height" placeholder="height" value="1080" width="255"></m-textbox>
+
+      <m-checkbox id="checkbox-mantain-size" width="255" label="mantain proportions"
+        placeholder="mantains the aspect ratio and original size of the highlighted image (center image)" checked="true""></m-checkbox>
+      <m-checkbox id="checkbox-shadow" width="255" label="drop shadow"
+        placeholder="adds a drop shadow in the highlighted image (center image)" checked="true""></m-checkbox>
+          
+      <m-slider id="slider-corner-radius" width="260" label="corner radius"
+        placeholder="sets the corner radius of the highlighted image (center image)" sufix="rad" value="10" min="10"
+        max="175"></m-slider>
+      <m-slider id="slider-background-blur" width="260" label="background blur"
+        placeholder="adjusts the amount of blur for the background image" sufix="%" value="35" min="5"
+        max="50"></m-slider>
 
       <m-button shader="glass" label="wallpaperize!" width="250" height="23" onclick="generateImage()"></m-button>
+
+      <!-- WIP
+      <m-checkbox disabled id="checkbox-alternate-style" width="255" label="alternate style"
+        placeholder="generates the wallpaper using an alternate style (all options above will be ignored, 
+        except for size and proportions check)" checked="false"></m-checkbox> 
+      -->
     </m-groupbox>
 
-    <br>
-    <hr>
-    <br>
-    
-    <br>
-    <!--TODO: add a little preview of the end result somewhere around here-->
+  <br>
+  <hr>
+  <br>
+
+  <!--TODO: add a little preview of the end result somewhere around here -->
+  
   </section>
 
   <footer>
     <span>made with &#128156 by </span><a href="https://github.com/otvv/">otvv</a><br>
     <span class="span-container">powered by
       <a href="https://github.com/otvv/malua"><img class="pill"
-          src="https://raw.githubusercontent.com/otvv/wallpaperize/main/repo/malua-logo.png" width="18px" height="18px"
-          alt="malua ui logo"></a>
+        src="https://raw.githubusercontent.com/otvv/wallpaperize/main/repo/malua-logo.png" width="18px" height="18px"
+        alt="malua ui logo"></a>
     </span>
   </footer>
 </body>
