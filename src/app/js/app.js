@@ -74,8 +74,8 @@ const generateCanvas = (wallWidth, wallHeight) => {
   newDocument.body.appendChild(canvasElement);
 
   // set canvas properties
-  canvasElement.width = wallWidth;
-  canvasElement.height = wallHeight;
+  canvasElement.width = +wallWidth;
+  canvasElement.height = +wallHeight;
 
   return canvasElement;
 };
@@ -100,13 +100,13 @@ const generateImage = () => {
   const customWidth = +widthTextboxElement.value || 1920; // (if nothing is set it will use 1920 as default width)
   const customHeight = +heightTextboxElement.value || 1080; // (if nothing is set it will use 1080 as default height)
 
-  // create canvas inside a new dom
+  // create canvas inside a new dom (blank page)
   const canvas = generateCanvas(customWidth, customHeight);
 
   // grab canvas context
   const ctx = canvas.getContext("2d");
 
-  // dummy img pointers
+  // dummy img "pointers"/instances
   const bgimg = new Image();
   const fgimg = new Image();
 
@@ -117,14 +117,14 @@ const generateImage = () => {
     const scaleFactorY = (canvas.height / bgimg.height);
     const scaleFactor = Math.max(scaleFactorX, scaleFactorY);
 
-    // zoonFactor (in pixels) (this is used to avoid a weird blurred white/blue border in the
+    // zoomFactor (in pixels) (this is used to avoid a weird blurred white/blue border in the
     // background of the wallpaper/canvas)
     const zoomFactor = 100;
-    const extra = 2;
+    const extraFactor = 2;
 
     // calculate the new dimensions to fill the canvas
-    const scaledWidth = (bgimg.width * scaleFactor) + (zoomFactor * extra);
-    const scaledHeight = (bgimg.height * scaleFactor) + (zoomFactor * extra);
+    const scaledWidth = (bgimg.width * scaleFactor) + (zoomFactor * extraFactor);
+    const scaledHeight = (bgimg.height * scaleFactor) + (zoomFactor * extraFactor);
 
     // calculate the position to center the image
     const offsetX = (canvas.width - scaledWidth) / 2;
@@ -155,20 +155,23 @@ const generateImage = () => {
         return;
       }
 
+      // "default" size of the highlight image
       let highlightImageDefaultWidth = 350;
       let highlightImageDefaultHeight = 350;
 
-      // resize highlight image if the user decides to not use the image's original proportions
+      // resize highlight image if the user decides to use the image's original proportions
       if (checkboxMantainSizeElement.checked) {
-        highlightImageDefaultWidth = fgimg.width * 0.6;
-        highlightImageDefaultHeight = fgimg.height * 0.6;
+        highlightImageDefaultWidth = +(fgimg.width * 0.3);
+        highlightImageDefaultHeight = +(fgimg.height * 0.3);
 
+        // adjust image accordingly if its bigger than the wallpaper background size 
+        // (width and height set in the options)
         if (highlightImageDefaultWidth >= +customWidth) {
-          highlightImageDefaultWidth = fgimg.width * 0.6;
+          highlightImageDefaultWidth = +(fgimg.width * 0.3);
         }
 
         if (highlightImageDefaultHeight >= +customHeight) {
-          highlightImageDefaultHeight = fgimg.height * 0.6;
+          highlightImageDefaultHeight = +(fgimg.height * 0.3);
         }
       }
 
