@@ -11,8 +11,9 @@ const textboxes = document.querySelectorAll("m-textbox");
 const sliders = document.querySelectorAll("m-slider");
 
 const generateRandomString = (length) => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
     result += characters[randomIndex];
@@ -35,7 +36,7 @@ const drawHighlightImage = (
   height,
   cornerRadius,
   dropShadow,
-  outline,
+  outline
 ) => {
   const applyShadow = () => {
     if (dropShadow) {
@@ -51,51 +52,42 @@ const drawHighlightImage = (
 
   const applyOutline = () => {
     if (outline) {
-
-    const pixelOffset = 0.5;
-  const widthOffsetDark = 4;
-  const widthOffsetLight = 2;
-  const outlineDarkColor = "rgba(0, 0, 0, 1.0)";
-  const outlineLightColor = "rgba(192, 192, 192, 1.0)";
-  const testColor = "rgba(255, 0, 0, 1.0)";
+      const outlineDarkColor = "rgb(0, 0, 0)";
+      const outlineLightColor = "rgb(195, 195, 195)";
   
-  ctx.save();
-  ctx.beginPath();
-
-  ctx.lineWidth = pixelOffset;
-  ctx.strokeStyle = outlineDarkColor;
-  ctx.roundRect(
-      x - pixelOffset,
-      y - pixelOffset,
-      width + pixelOffset * widthOffsetDark,
-      height + pixelOffset * widthOffsetDark,
-      cornerRadius
-    );
-    ctx.closePath();
-
-    ctx.stroke();
-    ctx.restore();
-
-    //
-
-    ctx.save();
-    ctx.beginPath();
-
-    ctx.lineWidth = pixelOffset;
-    ctx.strokeStyle = outlineLightColor;
-    ctx.roundRect(
-      x,
-      y,
-      width + pixelOffset * widthOffsetLight,
-      height + pixelOffset * widthOffsetLight,
-      cornerRadius
-    );
-    ctx.closePath();
-
-    ctx.stroke();
-    ctx.restore();
+      ctx.save();
+      ctx.beginPath();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = outlineDarkColor;
+      ctx.roundRect(
+          x - 1,
+          y - 1, 
+          width + (1.5 * 1.5), 
+          height + (1.5 * 1.5), 
+          cornerRadius
+      );
+      ctx.closePath();
+      ctx.stroke(); 
+      ctx.restore();
+      
+      //
+  
+      ctx.save();
+      ctx.beginPath();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = outlineLightColor; 
+      ctx.roundRect(
+          x, 
+          y, 
+          width,
+          height,
+          cornerRadius
+      );
+      ctx.closePath();
+      ctx.stroke();
+      ctx.restore();
     }
-  }
+  };
 
   if (cornerRadius >= 10) {
     const tempCanvas = document.createElement("canvas");
@@ -117,10 +109,6 @@ const drawHighlightImage = (
     applyShadow();
     applyOutline();
     ctx.drawImage(tempCanvas, x, y);
-  } else {
-    applyShadow();
-    applyOutline();
-    ctx.drawImage(image, x, y, width, height);
   }
 };
 
@@ -183,8 +171,8 @@ const generateImage = () => {
   // generate wallpaper background
   bgimg.onload = () => {
     // calculate scaling factors for the background image
-    const scaleFactorX = (canvas.width / bgimg.width);
-    const scaleFactorY = (canvas.height / bgimg.height);
+    const scaleFactorX = canvas.width / bgimg.width;
+    const scaleFactorY = canvas.height / bgimg.height;
     const scaleFactor = Math.max(scaleFactorX, scaleFactorY);
 
     // zoomFactor (in pixels) (this is used to avoid a weird blurred white/blue border in the
@@ -193,16 +181,17 @@ const generateImage = () => {
     const extraFactor = 2;
 
     // calculate the new dimensions to fill the canvas
-    const scaledWidth = (bgimg.width * scaleFactor) + (zoomFactor * extraFactor);
-    const scaledHeight = (bgimg.height * scaleFactor) + (zoomFactor * extraFactor);
+    const scaledWidth = bgimg.width * scaleFactor + zoomFactor * extraFactor;
+    const scaledHeight = bgimg.height * scaleFactor + zoomFactor * extraFactor;
 
     // calculate the position to center the image
     const offsetX = (canvas.width - scaledWidth) / 2;
     const offsetY = (canvas.height - scaledHeight) / 2;
 
     // handle options
-    const sliderBackgroundBlurElement = 
-      sliders[1].shadowRoot.querySelector("#slider-background-blur");
+    const sliderBackgroundBlurElement = sliders[1].shadowRoot.querySelector(
+      "#slider-background-blur"
+    );
 
     if (!sliderBackgroundBlurElement) {
       return;
@@ -218,8 +207,9 @@ const generateImage = () => {
     // generate highlight image
     fgimg.onload = () => {
       // handle options
-      const checkboxMantainSizeElement = 
-        checkboxes[0].shadowRoot.querySelector("#checkbox-mantain-size");
+      const checkboxMantainSizeElement = checkboxes[0].shadowRoot.querySelector(
+        "#checkbox-mantain-size"
+      );
 
       if (!checkboxMantainSizeElement) {
         return;
@@ -234,7 +224,7 @@ const generateImage = () => {
         highlightImageDefaultWidth = +(fgimg.width * 0.3);
         highlightImageDefaultHeight = +(fgimg.height * 0.3);
 
-        // adjust image accordingly if its bigger than the wallpaper background size 
+        // adjust image accordingly if its bigger than the wallpaper background size
         // (width and height set in the options)
         if (highlightImageDefaultWidth >= +customWidth) {
           highlightImageDefaultWidth = +(fgimg.width * 0.3);
@@ -246,18 +236,23 @@ const generateImage = () => {
       }
 
       // calculate middle of the canvas (screen)
-      const middleX = (+canvas.width / 2) - (+highlightImageDefaultWidth / 2);
-      const middleY = (+canvas.height / 2) - (+highlightImageDefaultHeight / 2);
+      const middleX = +canvas.width / 2 - +highlightImageDefaultWidth / 2;
+      const middleY = +canvas.height / 2 - +highlightImageDefaultHeight / 2;
 
       // handle options
       const checkboxShadowElement =
         checkboxes[1].shadowRoot.querySelector("#checkbox-shadow");
       const checkboxOutlineElement =
         checkboxes[2].shadowRoot.querySelector("#checkbox-outline");
-      const sliderCornerRadiusElement = 
-        sliders[0].shadowRoot.querySelector("#slider-corner-radius");
+      const sliderCornerRadiusElement = sliders[0].shadowRoot.querySelector(
+        "#slider-corner-radius"
+      );
 
-      if (!sliderCornerRadiusElement || !checkboxShadowElement || !checkboxOutlineElement) {
+      if (
+        !sliderCornerRadiusElement ||
+        !checkboxShadowElement ||
+        !checkboxOutlineElement
+      ) {
         return;
       }
 
@@ -290,7 +285,7 @@ const generateImage = () => {
 
       // random file name
       link.download = `${randomFileName}.png`;
-      
+
       // trigger download
       link.click();
 
