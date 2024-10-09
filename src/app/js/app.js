@@ -3,11 +3,28 @@
 
 "use strict";
 
+const generateButton = document.querySelector("#generateButton");
 const fileInput = document.querySelector("#fileInput");
 const fileLabel = document.querySelector("#fileLabel");
 const checkboxes = document.querySelectorAll("m-checkbox");
 const textboxes = document.querySelectorAll("m-textbox");
 const sliders = document.querySelectorAll("m-slider");
+
+const generateRandomString = (length) => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters[randomIndex];
+  }
+  return result;
+};
+
+const generateRandomName = () => {
+  const STRING_SIZE = 8;
+  const randomString = generateRandomString(STRING_SIZE);
+  return `wallpaperize_${randomString}`;
+};
 
 const drawHighlightImage = (
   ctx,
@@ -208,6 +225,17 @@ const generateImage = () => {
       );
 
       const base64 = canvas.toDataURL();
+      const randomFileName = generateRandomName();
+
+      // generate download link
+      const link = document.createElement("a");
+      link.href = base64;
+
+      // random file name
+      link.download = `${randomFileName}.png`;
+      
+      // trigger download
+      link.click();
 
       return base64;
     };
@@ -237,4 +265,8 @@ fileInput.addEventListener("change", (event) => {
 
   // change preview label with currently open file name
   fileLabel.textContent = `image loaded: ${truncatedString}`;
+});
+
+generateButton.addEventListener("click", () => {
+  generateImage();
 });
