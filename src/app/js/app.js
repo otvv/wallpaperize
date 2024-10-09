@@ -34,17 +34,68 @@ const drawHighlightImage = (
   width,
   height,
   cornerRadius,
-  dropShadow
+  dropShadow,
+  outline,
 ) => {
   const applyShadow = () => {
     if (dropShadow) {
       ctx.shadowColor = "rgba(0, 0, 0, 0.70)";
       ctx.shadowBlur = 10;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 5;
     } else {
       ctx.shadowColor = "transparent";
       ctx.shadowBlur = 0;
     }
   };
+
+  const applyOutline = () => {
+    if (outline) {
+
+    const pixelOffset = 0.5;
+  const widthOffsetDark = 4;
+  const widthOffsetLight = 2;
+  const outlineDarkColor = "rgba(0, 0, 0, 1.0)";
+  const outlineLightColor = "rgba(192, 192, 192, 1.0)";
+  const testColor = "rgba(255, 0, 0, 1.0)";
+  
+  ctx.save();
+  ctx.beginPath();
+
+  ctx.lineWidth = pixelOffset;
+  ctx.strokeStyle = outlineDarkColor;
+  ctx.roundRect(
+      x - pixelOffset,
+      y - pixelOffset,
+      width + pixelOffset * widthOffsetDark,
+      height + pixelOffset * widthOffsetDark,
+      cornerRadius
+    );
+    ctx.closePath();
+
+    ctx.stroke();
+    ctx.restore();
+
+    //
+
+    ctx.save();
+    ctx.beginPath();
+
+    ctx.lineWidth = pixelOffset;
+    ctx.strokeStyle = outlineLightColor;
+    ctx.roundRect(
+      x,
+      y,
+      width + pixelOffset * widthOffsetLight,
+      height + pixelOffset * widthOffsetLight,
+      cornerRadius
+    );
+    ctx.closePath();
+
+    ctx.stroke();
+    ctx.restore();
+    }
+  }
 
   if (cornerRadius >= 10) {
     const tempCanvas = document.createElement("canvas");
@@ -59,14 +110,16 @@ const drawHighlightImage = (
     tempCtx.arcTo(0, height, 0, 0, cornerRadius);
     tempCtx.arcTo(0, 0, width, 0, cornerRadius);
     tempCtx.closePath();
-
     tempCtx.clip();
+
     tempCtx.drawImage(image, 0, 0, width, height);
 
     applyShadow();
+    applyOutline();
     ctx.drawImage(tempCanvas, x, y);
   } else {
     applyShadow();
+    applyOutline();
     ctx.drawImage(image, x, y, width, height);
   }
 };
@@ -199,10 +252,12 @@ const generateImage = () => {
       // handle options
       const checkboxShadowElement =
         checkboxes[1].shadowRoot.querySelector("#checkbox-shadow");
+      const checkboxOutlineElement =
+        checkboxes[2].shadowRoot.querySelector("#checkbox-outline");
       const sliderCornerRadiusElement = 
         sliders[0].shadowRoot.querySelector("#slider-corner-radius");
 
-      if (!sliderCornerRadiusElement || !checkboxShadowElement) {
+      if (!sliderCornerRadiusElement || !checkboxShadowElement || !checkboxOutlineElement) {
         return;
       }
 
@@ -211,6 +266,7 @@ const generateImage = () => {
       // the user wants to keep the original image size
       const highlightImageCornerRadius = sliderCornerRadiusElement.value || 10;
       const highlightImageDropShadow = checkboxShadowElement.checked || false;
+      const highglightImageOutline = checkboxOutlineElement.checked || false;
 
       // draw highglight image at the middle of the canvas
       drawHighlightImage(
@@ -221,7 +277,8 @@ const generateImage = () => {
         highlightImageDefaultWidth,
         highlightImageDefaultHeight,
         highlightImageCornerRadius,
-        highlightImageDropShadow
+        highlightImageDropShadow,
+        highglightImageOutline
       );
 
       const base64 = canvas.toDataURL();
