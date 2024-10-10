@@ -107,8 +107,8 @@ const drawHighlightImage = (
     tempCtx.drawImage(image, 0, 0, width, height);
 
     applyShadow();
-    applyOutline();
     ctx.drawImage(tempCanvas, x, y);
+    applyOutline();
   }
 };
 
