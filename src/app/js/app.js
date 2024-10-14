@@ -74,7 +74,7 @@ const drawHighlightImage = (
   
       ctx.save();
       ctx.beginPath();
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 0.5;
       ctx.strokeStyle = outlineLightColor; 
       ctx.roundRect(
           x, 
