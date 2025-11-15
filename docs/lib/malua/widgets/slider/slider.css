@@ -43,20 +43,20 @@
 .m-slider::-ms-thumb {
   width: 14px;
   height: 14px;
-  
+
   border: 1px solid var(--slider-thumb-border);
   background: var(--slider-thumb-background);
-  
+
   border-radius: 50%;
 }
 
 .m-slider::-moz-range-thumb {
   width: 14px;
   height: 14px;
-  
+
   border: 1px solid var(--slider-thumb-border);
   background: var(--slider-thumb-background);
-  
+
   border-radius: 50%;
 
   appearance: none;
@@ -65,15 +65,14 @@
 .m-slider::-webkit-slider-thumb {
   width: 14px;
   height: 14px;
-  
+
   border: 1px solid var(--slider-thumb-border);
   background: var(--slider-thumb-background);
-  
+
   border-radius: 50%;
 
   appearance: none;
 }
-
 
 /*
     slider label and output text
@@ -84,6 +83,7 @@
 
 .m-slider-label {
   font-size: 14px;
+  text-shadow: var(--font-shadow);
   color: var(--slider-text-color);
 }
 
@@ -91,7 +91,7 @@
   font-size: 11px;
 
   width: 20px;
-  
+
   -ms-text-align-last: center;
   -moz-text-align-last: center;
 

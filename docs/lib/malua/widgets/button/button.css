@@ -16,7 +16,6 @@
   margin: 5px auto;
 
   font-weight: var(--font-normal);
-
   text-align: center;
   text-align-last: center;
 
@@ -33,7 +32,7 @@
 
   max-width: 84%;
   min-width: fit-content;
-  
+
   height: moz-fit-content;
   height: fit-content;
 }
@@ -44,7 +43,10 @@
 .m-button:hover {
   cursor: pointer;
 
-  box-shadow: 0 0 5px 1px var(--shadow);
+  color: var(--text-color-title);
+  font-weight: var(--font-bold);
+
+  box-shadow: 0 0 5px 1px var(--colored-shadow);
   border: 1px solid var(--button-border-hover);
 }
 

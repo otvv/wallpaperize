@@ -41,7 +41,7 @@
   -moz-user-drag: none !important;
 
   /* Font settings */
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: var(--font-normal);
 }
@@ -78,11 +78,12 @@ hr {
   --text-color-accent: #aa7ae0;
   --text-color-accent-alt: #9367b6;
   --text-color-disabled: #6e6e6e;
-  
+
   /* text flags */
   --text-outline: #242424;
   --text-warning: #9c9340;
   --text-shadow: #020202;
+  --text-shadow-colored: #9a6cb4c0;
 
   /* shadows */
   --shadow: #45454580;

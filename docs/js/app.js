@@ -36,7 +36,7 @@ const drawHighlightImage = (
   height,
   cornerRadius,
   dropShadow,
-  outline
+  outline,
 ) => {
   const applyShadow = () => {
     if (dropShadow) {
@@ -54,35 +54,29 @@ const drawHighlightImage = (
     if (outline) {
       const outlineDarkColor = "rgb(0, 0, 0)";
       const outlineLightColor = "rgb(195, 195, 195)";
-  
+
       ctx.save();
       ctx.beginPath();
       ctx.lineWidth = 1;
       ctx.strokeStyle = outlineDarkColor;
       ctx.roundRect(
-          x - 1,
-          y - 1, 
-          width + (1.5 * 1.5), 
-          height + (1.5 * 1.5), 
-          cornerRadius
+        x - 1,
+        y - 1,
+        width + 1.5 * 1.5,
+        height + 1.5 * 1.5,
+        cornerRadius,
       );
       ctx.closePath();
-      ctx.stroke(); 
+      ctx.stroke();
       ctx.restore();
-      
+
       //
-  
+
       ctx.save();
       ctx.beginPath();
       ctx.lineWidth = 0.5;
-      ctx.strokeStyle = outlineLightColor; 
-      ctx.roundRect(
-          x, 
-          y, 
-          width,
-          height,
-          cornerRadius
-      );
+      ctx.strokeStyle = outlineLightColor;
+      ctx.roundRect(x, y, width, height, cornerRadius);
       ctx.closePath();
       ctx.stroke();
       ctx.restore();
@@ -113,6 +107,12 @@ const drawHighlightImage = (
 };
 
 const generateCanvas = (wallWidth, wallHeight) => {
+  const currFile = fileInput.files;
+
+  if (!currFile) {
+    return;
+  }
+
   // create new window/tab to generate the canvas with a new dom
   const newWindow = window.open("", "_blank");
   const newDocument = newWindow.document;
@@ -121,7 +121,6 @@ const generateCanvas = (wallWidth, wallHeight) => {
     return;
   }
 
-  // generate canvas element
   const canvasElement = newDocument.createElement("canvas");
 
   if (!canvasElement) {
@@ -141,7 +140,7 @@ const generateCanvas = (wallWidth, wallHeight) => {
 const generateImage = () => {
   const currFile = fileInput.files;
 
-  if (!currFile) {
+  if (!currFile || !currFile[0]) {
     return;
   }
 
@@ -160,23 +159,26 @@ const generateImage = () => {
 
   // create canvas inside a new dom (blank page)
   const canvas = generateCanvas(customWidth, customHeight);
-
-  // grab canvas context
   const ctx = canvas.getContext("2d");
 
-  // dummy img "pointers"/instances
   const bgimg = new Image();
   const fgimg = new Image();
 
   // generate wallpaper background
   bgimg.onload = () => {
+    if (!currFile[0]) {
+      return;
+    }
+
     // calculate scaling factors for the background image
     const scaleFactorX = canvas.width / bgimg.width;
     const scaleFactorY = canvas.height / bgimg.height;
     const scaleFactor = Math.max(scaleFactorX, scaleFactorY);
 
-    // zoomFactor (in pixels) (this is used to avoid a weird blurred white/blue border in the
-    // background of the wallpaper/canvas)
+    // zoomFactor (in pixels)
+    // (this is used to avoid a weird blurred
+    // white/blue border in the background of
+    // the wallpaper/canvas)
     const zoomFactor = 100;
     const extraFactor = 2;
 
@@ -188,64 +190,69 @@ const generateImage = () => {
     const offsetX = (canvas.width - scaledWidth) / 2;
     const offsetY = (canvas.height - scaledHeight) / 2;
 
-    // handle options
     const sliderBackgroundBlurElement = sliders[1].shadowRoot.querySelector(
-      "#slider-background-blur"
+      "#slider-background-blur",
     );
 
     if (!sliderBackgroundBlurElement) {
       return;
     }
 
-    // background blur
     ctx.filter = `blur(${+sliderBackgroundBlurElement.value}px)`;
 
     // draw background image
     ctx.drawImage(bgimg, offsetX, offsetY, scaledWidth, scaledHeight);
-    ctx.filter = "none";
 
     // generate highlight image
+    ctx.filter = "none";
     fgimg.onload = () => {
-      // handle options
       const checkboxMantainSizeElement = checkboxes[0].shadowRoot.querySelector(
-        "#checkbox-mantain-size"
+        "#checkbox-mantain-size",
       );
 
       if (!checkboxMantainSizeElement) {
         return;
       }
 
-      // "default" size of the highlight image
-      let highlightImageDefaultWidth = 350;
-      let highlightImageDefaultHeight = 350;
+      // TODO: detect image aspect ratio and use it
+      // as a basis to calculate  the "default" highlight image size
+      let highlightImageDefaultWidth = 0;
+      let highlightImageDefaultHeight = 0;
 
       // resize highlight image if the user decides to use the image's original proportions
       if (checkboxMantainSizeElement.checked) {
-        highlightImageDefaultWidth = +(fgimg.width * 0.3);
-        highlightImageDefaultHeight = +(fgimg.height * 0.3);
-
-        // adjust image accordingly if its bigger than the wallpaper background size
+        // adjust image accordingly if it happens to be bigger
+        // than the wallpaper background size
         // (width and height set in the options)
         if (highlightImageDefaultWidth >= +customWidth) {
-          highlightImageDefaultWidth = +(fgimg.width * 0.3);
+          highlightImageDefaultWidth = +(fgimg.width * 0.4);
+        } else {
+          highlightImageDefaultWidth = +(fgimg.width * 0.5);
         }
 
         if (highlightImageDefaultHeight >= +customHeight) {
-          highlightImageDefaultHeight = +(fgimg.height * 0.3);
+          highlightImageDefaultHeight = +(fgimg.height * 0.4);
+        } else {
+          highlightImageDefaultHeight = +(fgimg.height * 0.4);
         }
+      } else {
+        // fixed size of the highlight image
+        // if the use doesnt want to use the image's
+        // original proportions
+        highlightImageDefaultWidth = 350;
+        highlightImageDefaultHeight = 350;
       }
 
-      // calculate middle of the canvas (screen)
+      // get middle of the canvas (screen)
       const middleX = +canvas.width / 2 - +highlightImageDefaultWidth / 2;
       const middleY = +canvas.height / 2 - +highlightImageDefaultHeight / 2;
 
-      // handle options
       const checkboxShadowElement =
         checkboxes[1].shadowRoot.querySelector("#checkbox-shadow");
       const checkboxOutlineElement =
         checkboxes[2].shadowRoot.querySelector("#checkbox-outline");
       const sliderCornerRadiusElement = sliders[0].shadowRoot.querySelector(
-        "#slider-corner-radius"
+        "#slider-corner-radius",
       );
 
       if (
@@ -256,9 +263,8 @@ const generateImage = () => {
         return;
       }
 
-      // set custom highlighted image border corner radius and drop shadow
-      // TODO: properly handle corner radius if the user uses the image's original proportions
-      // the user wants to keep the original image size
+      // set custom highlighted image border,
+      // corner radius and drop shadow
       const highlightImageCornerRadius = sliderCornerRadiusElement.value || 10;
       const highlightImageDropShadow = checkboxShadowElement.checked || false;
       const highglightImageOutline = checkboxOutlineElement.checked || false;
@@ -273,23 +279,23 @@ const generateImage = () => {
         highlightImageDefaultHeight,
         highlightImageCornerRadius,
         highlightImageDropShadow,
-        highglightImageOutline
+        highglightImageOutline,
       );
 
       const base64 = canvas.toDataURL();
       const randomFileName = generateRandomName();
 
-      // generate download link
-      const link = document.createElement("a");
-      link.href = base64;
+      // generate image file with base64 data and create
+      // the download link
+      const downloadLink = document.createElement("a");
+      downloadLink.href = base64;
 
-      // random file name
-      link.download = `${randomFileName}.png`;
+      // set a custom file name for the
+      // file and trigger the download
+      downloadLink.download = `${randomFileName}.png`;
+      downloadLink.click();
 
-      // trigger download
-      link.click();
-
-      return base64;
+      return;
     };
 
     fgimg.src = URL.createObjectURL(currFile[0]);
@@ -299,6 +305,10 @@ const generateImage = () => {
 };
 
 fileInput.addEventListener("change", (event) => {
+  if (!event.target) {
+    return;
+  }
+
   const currFile = event.target.files;
 
   if (!currFile || !currFile[0].name) {
@@ -320,5 +330,7 @@ fileInput.addEventListener("change", (event) => {
 });
 
 generateButton.addEventListener("click", () => {
-  generateImage();
+  if (fileInput && fileInput.files) {
+    generateImage();
+  }
 });
