@@ -10,9 +10,15 @@ const checkboxes = document.querySelectorAll("m-checkbox");
 const textboxes = document.querySelectorAll("m-textbox");
 const sliders = document.querySelectorAll("m-slider");
 
+const getUserScreenSize = () => {
+  return {
+    width: window.screen.width,
+    height: window.screen.height,
+  };
+};
+
 const generateRandomString = (length) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
@@ -38,6 +44,7 @@ const drawHighlightImage = (
   dropShadow,
   outline,
 ) => {
+  // apply shadow to the image when drawing onto the main canvas
   const applyShadow = () => {
     if (dropShadow) {
       ctx.shadowColor = "rgba(0, 0, 0, 0.70)";
@@ -47,61 +54,85 @@ const drawHighlightImage = (
     } else {
       ctx.shadowColor = "transparent";
       ctx.shadowBlur = 0;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
     }
   };
 
   const applyOutline = () => {
-    if (outline) {
-      const outlineDarkColor = "rgb(0, 0, 0)";
-      const outlineLightColor = "rgb(195, 195, 195)";
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = outlineDarkColor;
-      ctx.roundRect(
-        x - 1,
-        y - 1,
-        width + 1.5 * 1.5,
-        height + 1.5 * 1.5,
-        cornerRadius,
-      );
-      ctx.closePath();
-      ctx.stroke();
-      ctx.restore();
-
-      //
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.lineWidth = 0.5;
-      ctx.strokeStyle = outlineLightColor;
-      ctx.roundRect(x, y, width, height, cornerRadius);
-      ctx.closePath();
-      ctx.stroke();
-      ctx.restore();
+    if (!outline) {
+      return;
     }
+
+    const outlineDarkColor = "rgb(0, 0, 0)";
+    const outlineLightColor = "rgb(195, 195, 195)";
+
+    // draw outlines without accounting for the shadow, to avoid blurred/offset lines
+    ctx.save();
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+
+    // dark outer line (half-pixel alignment)
+    ctx.beginPath();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = outlineDarkColor;
+    ctx.roundRect(x - 0.5, y - 0.5, width + 1, height + 1, cornerRadius);
+    ctx.stroke();
+    ctx.closePath();
+
+    // inner light line (slight inset to be inside the darker outline)
+    ctx.beginPath();
+    ctx.lineWidth = 0.5;
+    ctx.strokeStyle = outlineLightColor;
+    ctx.roundRect(
+      x + 0.25,
+      y + 0.25,
+      Math.max(0, width - 0.5),
+      Math.max(0, height - 0.5),
+      cornerRadius,
+    );
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.restore();
   };
 
+  // use an offscreen canvas to clip the image
   if (cornerRadius >= 10) {
+    const tempWidth = Math.max(1, Math.round(width));
+    const tempHeight = Math.max(1, Math.round(height));
     const tempCanvas = document.createElement("canvas");
-    tempCanvas.width = width;
-    tempCanvas.height = height;
+    tempCanvas.width = tempWidth;
+    tempCanvas.height = tempHeight;
     const tempCtx = tempCanvas.getContext("2d");
 
+    // rounded-rect clipping path on temp canvas
     tempCtx.beginPath();
     tempCtx.moveTo(cornerRadius, 0);
-    tempCtx.arcTo(width, 0, width, height, cornerRadius);
-    tempCtx.arcTo(width, height, 0, height, cornerRadius);
-    tempCtx.arcTo(0, height, 0, 0, cornerRadius);
-    tempCtx.arcTo(0, 0, width, 0, cornerRadius);
+    tempCtx.arcTo(tempWidth, 0, tempWidth, tempHeight, cornerRadius);
+    tempCtx.arcTo(tempWidth, tempHeight, 0, tempHeight, cornerRadius);
+    tempCtx.arcTo(0, tempHeight, 0, 0, cornerRadius);
+    tempCtx.arcTo(0, 0, tempWidth, 0, cornerRadius);
     tempCtx.closePath();
     tempCtx.clip();
 
-    tempCtx.drawImage(image, 0, 0, width, height);
-
+    // draw source image
+    tempCtx.drawImage(image, 0, 0, tempWidth, tempHeight);
     applyShadow();
     ctx.drawImage(tempCanvas, x, y);
+    applyOutline();
+  } else {
+    // corner radius too small ignore outline while handling shadows and radius
+    applyShadow();
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x, y, width, height);
+    ctx.closePath();
+    ctx.drawImage(image, x, y, width, height);
+    ctx.restore();
+
     applyOutline();
   }
 };
@@ -144,18 +175,9 @@ const generateImage = () => {
     return;
   }
 
-  // get desired wallpaper size
-  const widthTextboxElement =
-    textboxes[0].shadowRoot.querySelector("#textbox-width");
-  const heightTextboxElement =
-    textboxes[1].shadowRoot.querySelector("#textbox-height");
-
-  if (!widthTextboxElement || !heightTextboxElement) {
-    return;
-  }
-
-  const customWidth = +widthTextboxElement.value || 1920; // (if nothing is set it will use 1920 as default width)
-  const customHeight = +heightTextboxElement.value || 1080; // (if nothing is set it will use 1080 as default height)
+  // use users defined resolution (defaults to main screen size)
+  const customWidth = widthTextboxElement.value;
+  const customHeight = heightTextboxElement.value;
 
   // create canvas inside a new dom (blank page)
   const canvas = generateCanvas(customWidth, customHeight);
@@ -175,10 +197,7 @@ const generateImage = () => {
     const scaleFactorY = canvas.height / bgimg.height;
     const scaleFactor = Math.max(scaleFactorX, scaleFactorY);
 
-    // zoomFactor (in pixels)
-    // (this is used to avoid a weird blurred
-    // white/blue border in the background of
-    // the wallpaper/canvas)
+    // zoomFactor (in pixels) to avoid edge artifacts
     const zoomFactor = 100;
     const extraFactor = 2;
 
@@ -214,31 +233,46 @@ const generateImage = () => {
         return;
       }
 
-      // TODO: detect image aspect ratio and use it
-      // as a basis to calculate  the "default" highlight image size
+      // compute highlight image default width/height
       let highlightImageDefaultWidth = 0;
       let highlightImageDefaultHeight = 0;
 
       // resize highlight image if the user decides to use the image's original proportions
       if (checkboxMantainSizeElement.checked) {
-        // adjust image accordingly if it happens to be bigger
-        // than the wallpaper background size
-        // (width and height set in the options)
-        if (highlightImageDefaultWidth >= +customWidth) {
-          highlightImageDefaultWidth = +(fgimg.width * 0.4);
-        } else {
-          highlightImageDefaultWidth = +(fgimg.width * 0.5);
+        // scale the source image down to fit canvas while preserving the aspect ratio
+        const maxFraction = 0.5; // highlight will try to fit within half the canvas by default
+        const maxW = Math.max(
+          1,
+          Math.min(fgimg.width, Math.floor(customWidth * maxFraction)),
+        );
+        const maxH = Math.max(
+          1,
+          Math.min(fgimg.height, Math.floor(customHeight * maxFraction)),
+        );
+
+        // preserve aspect ratio
+        const ratio = fgimg.width / fgimg.height;
+        let w = fgimg.width;
+        let h = fgimg.height;
+
+        // Scale down to fit within maxW x maxH
+        if (w > maxW) {
+          w = maxW;
+          h = Math.round(w / ratio);
+        }
+        if (h > maxH) {
+          h = maxH;
+          w = Math.round(h * ratio);
         }
 
-        if (highlightImageDefaultHeight >= +customHeight) {
-          highlightImageDefaultHeight = +(fgimg.height * 0.4);
-        } else {
-          highlightImageDefaultHeight = +(fgimg.height * 0.4);
-        }
+        // ensure to never exceed the canvas size
+        w = Math.min(w, customWidth);
+        h = Math.min(h, customHeight);
+
+        highlightImageDefaultWidth = w;
+        highlightImageDefaultHeight = h;
       } else {
         // fixed size of the highlight image
-        // if the use doesnt want to use the image's
-        // original proportions
         highlightImageDefaultWidth = 350;
         highlightImageDefaultHeight = 350;
       }
@@ -265,11 +299,11 @@ const generateImage = () => {
 
       // set custom highlighted image border,
       // corner radius and drop shadow
-      const highlightImageCornerRadius = sliderCornerRadiusElement.value || 10;
+      const highlightImageCornerRadius = +sliderCornerRadiusElement.value || 10;
       const highlightImageDropShadow = checkboxShadowElement.checked || false;
       const highglightImageOutline = checkboxOutlineElement.checked || false;
 
-      // draw highglight image at the middle of the canvas
+      // draw highlight image at the middle of the canvas
       drawHighlightImage(
         ctx,
         fgimg,
@@ -303,6 +337,20 @@ const generateImage = () => {
 
   bgimg.src = URL.createObjectURL(currFile[0]);
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  const { width, height } = getUserScreenSize();
+
+  const widthTextboxElement = textboxes[0].shadowRoot.querySelector("#textbox-width");
+  const heightTextboxElement = textboxes[1].shadowRoot.querySelector("#textbox-height");
+
+  if (!widthTextboxElement || !heightTextboxElement) {
+    return;
+  }
+
+  widthTextboxElement.value = width;
+  heightTextboxElement.value = height;
+});
 
 fileInput.addEventListener("change", (event) => {
   if (!event.target) {
