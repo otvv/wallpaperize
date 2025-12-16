@@ -175,6 +175,13 @@ const generateImage = () => {
     return;
   }
 
+  const widthTextboxElement = textboxes[0].shadowRoot.querySelector("#textbox-width");
+  const heightTextboxElement = textboxes[1].shadowRoot.querySelector("#textbox-height");
+
+  if (!widthTextboxElement || !heightTextboxElement) {
+    return;
+  }
+
   // use users defined resolution (defaults to main screen size)
   const customWidth = widthTextboxElement.value;
   const customHeight = heightTextboxElement.value;
