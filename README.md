@@ -14,9 +14,14 @@
 
 This web app is inspired by another app also called [wallpaperize](https://github.com/Philip-Scott/wallpaperize) which was made by [**Philip Scott**](https://github.com/Philip-Scott), unfortunately this app was made exclusively for a Linux distribution called _ElementaryOS_ and the app is not being mantained anymore.
 Since this app was something I've used on a regular basis when I was using ElementaryOS, I've decided to make something more widely available for other Linux distros or even other *OS*`es (As long as it supports a modern web-browser).
-
-<img title="wallpaperize-example" alt="example image of what wallpaperize does" src="repo/wallpaperize-example.png">
-
+<p><img src="repo/wallpaperize-example-1.png" alt="example-1" width="900" /></p>
+<details>
+<summary><i>click to show more</i></summary>
+  <p><img src="repo/wallpaperize-example-2.png" alt="example-2" width="900" /></p>
+  <p><img src="repo/wallpaperize-example-3.png" alt="example-3" width="900" /></p>
+  <p><img src="repo/wallpaperize-example-4.png" alt="example-4" width="900" /></p>
+  <p><img src="repo/wallpaperize-example-5.png" alt="example-5" width="900" /></p>
+</details>
 If you find bugs or glitches feel free to report it in the issues tab. If you want to contribute, you can always make a pull request.
 
 #
