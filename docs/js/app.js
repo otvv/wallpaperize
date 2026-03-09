@@ -44,7 +44,6 @@ const drawHighlightImage = (
   dropShadow,
   outline,
 ) => {
-  // apply shadow to the image when drawing onto the main canvas
   const applyShadow = () => {
     if (dropShadow) {
       ctx.shadowColor = "rgba(0, 0, 0, 0.70)";
@@ -59,47 +58,6 @@ const drawHighlightImage = (
     }
   };
 
-  const applyOutline = () => {
-    if (!outline) {
-      return;
-    }
-
-    const outlineDarkColor = "rgb(0, 0, 0)";
-    const outlineLightColor = "rgb(195, 195, 195)";
-
-    // draw outlines without accounting for the shadow, to avoid blurred/offset lines
-    ctx.save();
-    ctx.shadowColor = "transparent";
-    ctx.shadowBlur = 0;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
-
-    // dark outer line (half-pixel alignment)
-    ctx.beginPath();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = outlineDarkColor;
-    ctx.roundRect(x - 0.5, y - 0.5, width + 1, height + 1, cornerRadius);
-    ctx.stroke();
-    ctx.closePath();
-
-    // inner light line (slight inset to be inside the darker outline)
-    ctx.beginPath();
-    ctx.lineWidth = 0.5;
-    ctx.strokeStyle = outlineLightColor;
-    ctx.roundRect(
-      x + 0.25,
-      y + 0.25,
-      Math.max(0, width - 0.5),
-      Math.max(0, height - 0.5),
-      cornerRadius,
-    );
-    ctx.stroke();
-    ctx.closePath();
-
-    ctx.restore();
-  };
-
-  // use an offscreen canvas to clip the image
   if (cornerRadius >= 10) {
     const tempWidth = Math.max(1, Math.round(width));
     const tempHeight = Math.max(1, Math.round(height));
@@ -120,20 +78,64 @@ const drawHighlightImage = (
 
     // draw source image
     tempCtx.drawImage(image, 0, 0, tempWidth, tempHeight);
+
+    // draw outline ON the temp canvas (inside the clip) so it can never escape
+    if (outline) {
+      const outlineDarkColor = "rgb(0, 0, 0)";
+      const outlineLightColor = "rgb(145, 145, 145)";
+
+      // dark outer line
+      tempCtx.beginPath();
+      tempCtx.lineWidth = 2; // 2px stroke so 1px is visible after clipping eats the outer half
+      tempCtx.strokeStyle = outlineDarkColor;
+      tempCtx.moveTo(cornerRadius, 0);
+      tempCtx.arcTo(tempWidth, 0, tempWidth, tempHeight, cornerRadius);
+      tempCtx.arcTo(tempWidth, tempHeight, 0, tempHeight, cornerRadius);
+      tempCtx.arcTo(0, tempHeight, 0, 0, cornerRadius);
+      tempCtx.arcTo(0, 0, tempWidth, 0, cornerRadius);
+      tempCtx.closePath();
+      tempCtx.stroke();
+
+      // inner light line
+      const inset = 1.5;
+      tempCtx.beginPath();
+      tempCtx.lineWidth = 1;
+      tempCtx.strokeStyle = outlineLightColor;
+      tempCtx.moveTo(cornerRadius + inset, inset);
+      tempCtx.arcTo(
+        tempWidth - inset,
+        inset,
+        tempWidth - inset,
+        tempHeight - inset,
+        Math.max(0, cornerRadius - inset),
+      );
+      tempCtx.arcTo(
+        tempWidth - inset,
+        tempHeight - inset,
+        inset,
+        tempHeight - inset,
+        Math.max(0, cornerRadius - inset),
+      );
+      tempCtx.arcTo(
+        inset,
+        tempHeight - inset,
+        inset,
+        inset,
+        Math.max(0, cornerRadius - inset),
+      );
+      tempCtx.arcTo(
+        inset,
+        inset,
+        tempWidth - inset,
+        inset,
+        Math.max(0, cornerRadius - inset),
+      );
+      tempCtx.closePath();
+      tempCtx.stroke();
+    }
+
     applyShadow();
     ctx.drawImage(tempCanvas, x, y);
-    applyOutline();
-  } else {
-    // corner radius too small ignore outline while handling shadows and radius
-    applyShadow();
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(x, y, width, height);
-    ctx.closePath();
-    ctx.drawImage(image, x, y, width, height);
-    ctx.restore();
-
-    applyOutline();
   }
 };
 
@@ -220,11 +222,18 @@ const generateImage = () => {
       "#slider-background-blur",
     );
 
-    if (!sliderBackgroundBlurElement) {
+    const checkboxBlackWhiteElement =
+      checkboxes[3].shadowRoot.querySelector("#checkbox-greyscale");
+
+    if (!sliderBackgroundBlurElement || !checkboxBlackWhiteElement) {
       return;
     }
 
     ctx.filter = `blur(${+sliderBackgroundBlurElement.value}px)`;
+
+    if (checkboxBlackWhiteElement.checked) {
+      ctx.filter += `grayscale(100%)`;
+    }
 
     // draw background image
     ctx.drawImage(bgimg, offsetX, offsetY, scaledWidth, scaledHeight);
@@ -280,6 +289,9 @@ const generateImage = () => {
         highlightImageDefaultHeight = h;
       } else {
         // fixed size of the highlight image
+        // TODO: decrease the image size by
+        // setting a specific image percentage
+        // to make this option a dynamic
         highlightImageDefaultWidth = 350;
         highlightImageDefaultHeight = 350;
       }
