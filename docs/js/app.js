@@ -393,7 +393,7 @@ fileInput.addEventListener("change", (event) => {
   }
 
   // change preview label with currently open file name
-  fileLabel.textContent = `image loaded: ${truncatedString}`;
+  fileLabel.textContent = `image file loaded: ${truncatedString}`;
 });
 
 generateButton.addEventListener("click", () => {

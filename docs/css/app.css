@@ -46,7 +46,7 @@ header {
   text-align: center;
 
   background-color: #19161b;
-  border-bottom: 1px solid #5d5c5f70;
+  border-bottom: 1px solid #5d5c5f2c;
   color: var(--text-color-title);
 }
 
@@ -56,8 +56,20 @@ footer {
   text-align: center;
 
   background-color: #19161b;
-  border-top: 1px solid #5d5c5f70;
+  border-top: 1px solid #5d5c5f2c;
   color: var(--text-color-title);
+}
+
+.dotted-texture {
+  background-image: radial-gradient(circle, #aa7ae017 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.logo {
+  display: block;
+  margin-top: 5px;
+  width: 35px;
+  height: 35px;
 }
 
 .input-file {
@@ -66,9 +78,7 @@ footer {
 
 .span-container {
   display: flex;
-  flex-direction: row;
   justify-content: center;
-
   align-items: center;
 }
 
@@ -77,6 +87,10 @@ footer {
 }
 
 .pill {
-  margin-top: 2px;
-  margin-left: 3px;
+  width: 16px;
+  height: 16px;
+
+  margin-top: 7px;
+  margin-left: 5px;
+  margin-right: 5px; /* only here to make spacing consistent in case something gets added after the logo */
 }
