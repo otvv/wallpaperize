@@ -31,8 +31,7 @@ If you find bugs or glitches feel free to report it in the issues tab. If you wa
 
 -   improve guassian blur
 -   turn malua into a sub-module
--   improve web app design (add a description, logo, mobile friendly design, etc)
--   ~~add an example image in the README.md file~~
+-   improve web app design (preview of the result, new logo, mobile friendly design)
 
 </details>
 
