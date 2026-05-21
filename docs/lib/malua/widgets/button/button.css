@@ -44,7 +44,6 @@
   cursor: pointer;
 
   color: var(--text-color-title);
-  font-weight: var(--font-bold);
 
   box-shadow: 0 0 5px 1px var(--colored-shadow);
   border: 1px solid var(--button-border-hover);

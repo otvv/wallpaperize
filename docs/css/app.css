@@ -29,20 +29,18 @@ section {
 
 a {
   text-decoration: none;
+  box-sizing: border-box;
 
   color: var(--text-color-title);
   font-weight: var(--font-bold);
 }
 
 label {
-  display: flex;
-
   text-align: center;
 }
 
 header {
-  width: 100%;
-  padding: 10px;
+  padding: 20px;
   text-align: center;
 
   background-color: #19161b;
@@ -51,7 +49,6 @@ header {
 }
 
 footer {
-  width: 100%;
   padding: 10px;
   text-align: center;
 
@@ -76,7 +73,26 @@ footer {
   display: none;
 }
 
-.span-container {
+.container-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.container-footer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,6 +100,11 @@ footer {
 
 .title {
   font-weight: var(--font-bold);
+  font-size: 16px;
+}
+
+.text {
+  font-weight: var(--font-normal);
 }
 
 .pill {
